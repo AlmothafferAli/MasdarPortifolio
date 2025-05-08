@@ -1,10 +1,10 @@
+"use client";
 import React from "react";
-import Image from "next/image";
-import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
-import SecondaryButton from "@/app/components/EleComponents/SecondaryButton";
-import { motion } from "framer-motion";
+;
 import MainFirst from "@/app/components/MainFirst";
 import Projects from "@/app/components/Projects";
+import CounterUsers from "@/app/components/CounterUsers";
+import Partners from "@/app/components/partners";
 
 export default function page() {
   return (
@@ -13,6 +13,10 @@ export default function page() {
       <MainFirst />
       {/* Projects Section */}
       <Projects />
+
+      {/* counterUsers Section */}
+      <CounterUsers />
+      <Partners />
     </div>
   );
 }

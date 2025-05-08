@@ -2,27 +2,72 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSelector } from "react-redux";
-import { RootState } from "../features/Store";
+
 import {
   FaTwitter,
   FaFacebook,
   FaInstagram,
-  FaLinkedin,
-  FaGithub,
+
+
   FaEnvelope,
   FaPhoneAlt,
   FaMapMarkerAlt,
 } from "react-icons/fa";
 
 export default function Footer() {
-  const isDark = useSelector((state: RootState) => state.header.isDark);
 
+  const socialLinks = [
+    {
+      href: "https://twitter.com",
+      icon: <FaTwitter />,
+    },
+    {
+      href: "https://facebook.com",
+      icon: <FaFacebook />,
+    },
+    {
+      href: "https://instagram.com",
+      icon: <FaInstagram />,
+    },
+  ];
+  const contactInfo = [
+    {
+      href: "mailto:info@masdar.com",
+      icon: <FaEnvelope />,
+    },
+    {
+      href: "tel:+964770000000",
+      icon: <FaPhoneAlt />,
+    },
+    {
+      href: "https://maps.app.goo.gl/12",
+      icon: <FaMapMarkerAlt />,
+    },
+  ];
+  const fastLinks = [
+    {
+      href: "/",
+      text: "الرئيسية",
+    },
+    {
+      href: "/about",
+      text: "من نحن",
+    },
+    {
+      href: "/services",
+      text: "الخدمات",
+    },
+
+    {
+      href: "/terms",
+      text: "الشروط والأحكام",
+    },
+  ];
   return (
     <footer className="w-full bg-gradient-to-b from-transparent to-gray-100 dark:from-transparent dark:to-black/30 pt-16 pb-8">
       <div className="container mx-auto px-6">
         {/* Main footer content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 text-right">
+        <div className="grid grid-cols-1  md:grid-cols-4 gap-10 text-right">
           {/* Logo and about section */}
           <div className="md:col-span-1">
             <div className="flex justify-end md:justify-center">
@@ -45,38 +90,16 @@ export default function Footer() {
               روابط سريعة
             </h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/"
-                  className="text-gray-600 dark:text-gray-300 hover:text-DarkPrimary transition-colors duration-300"
-                >
-                  الرئيسية
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="text-gray-600 dark:text-gray-300 hover:text-DarkPrimary transition-colors duration-300"
-                >
-                  من نحن
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services"
-                  className="text-gray-600 dark:text-gray-300 hover:text-DarkPrimary transition-colors duration-300"
-                >
-                  الخدمات
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-gray-600 dark:text-gray-300 hover:text-DarkPrimary transition-colors duration-300"
-                >
-                  اتصل بنا
-                </Link>
-              </li>
+              {fastLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-600 dark:text-gray-300 hover:text-DarkPrimary transition-colors duration-300"
+                  >
+                    {link.text}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -86,55 +109,34 @@ export default function Footer() {
               معلومات الاتصال
             </h3>
             <ul className="space-y-3">
-              <li className="flex items-center justify-end gap-2 text-gray-600 dark:text-gray-300">
-                <span>info@example.com</span>
-                <FaEnvelope className="text-DarkPrimary" />
-              </li>
-              <li className="flex items-center justify-end gap-2 text-gray-600 dark:text-gray-300">
-                <span>+123 456 7890</span>
-                <FaPhoneAlt className="text-DarkPrimary" />
-              </li>
-              <li className="flex items-center justify-end gap-2 text-gray-600 dark:text-gray-300">
-                <span>الرياض، المملكة العربية السعودية</span>
-                <FaMapMarkerAlt className="text-DarkPrimary" />
-              </li>
+              {contactInfo.map((info) => (
+                <li
+                  key={info.href}
+                  className="flex items-center justify-end gap-2 text-gray-600 dark:text-gray-300"
+                >
+                  <span>{info.href}</span>
+                  {info.icon}
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Social media */}
+
           <div className="md:col-span-1">
             <h3 className="text-DarkPrimary font-bold text-xl mb-4">
               تواصل معنا
             </h3>
             <div className="flex space-x-4 justify-end">
-              <Link
-                href="#"
-                aria-label="Twitter"
-                className="bg-gray-200 dark:bg-gray-700 p-3 rounded-full hover:bg-DarkPrimary hover:text-white dark:hover:bg-DarkPrimary transition-colors duration-300"
-              >
-                <FaTwitter className="text-lg" />
-              </Link>
-              <Link
-                href="#"
-                aria-label="Facebook"
-                className="bg-gray-200 dark:bg-gray-700 p-3 rounded-full hover:bg-DarkPrimary hover:text-white dark:hover:bg-DarkPrimary transition-colors duration-300"
-              >
-                <FaFacebook className="text-lg" />
-              </Link>
-              <Link
-                href="#"
-                aria-label="Instagram"
-                className="bg-gray-200 dark:bg-gray-700 p-3 rounded-full hover:bg-DarkPrimary hover:text-white dark:hover:bg-DarkPrimary transition-colors duration-300"
-              >
-                <FaInstagram className="text-lg" />
-              </Link>
-              <Link
-                href="#"
-                aria-label="LinkedIn"
-                className="bg-gray-200 dark:bg-gray-700 p-3 rounded-full hover:bg-DarkPrimary hover:text-white dark:hover:bg-DarkPrimary transition-colors duration-300"
-              >
-                <FaLinkedin className="text-lg" />
-              </Link>
+              {socialLinks.map((link) => (
+                <Link
+                  href={link.href}
+                  key={link.href}
+                  className="bg-gray-200 dark:bg-gray-700 p-3 rounded-full hover:bg-DarkPrimary hover:text-white dark:hover:bg-DarkPrimary transition-colors duration-200"
+                >
+                  {link.icon}
+                </Link>
+              ))}
             </div>
           </div>
         </div>

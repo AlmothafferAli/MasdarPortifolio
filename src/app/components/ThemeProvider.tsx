@@ -25,7 +25,7 @@ export default function ThemeProvider({ children }: ThemeProviderProps) {
     } else {
       document.documentElement.classList.remove("headerToggled");
     }
-  }, [isDark]);
+  }, [isDark, isToggled]);
 
   // Initialize theme from localStorage on first load
   useEffect(() => {

@@ -7,9 +7,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 import SecondaryButton from "@/app/components/EleComponents/SecondaryButton";
 import PrimaryAuth2 from "@/app/components/EleComponents/PrimaryAuth2";
-import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import {
   FaApple,
   FaEye,
@@ -20,8 +18,9 @@ import {
 import useAuth from "@/app/hooks/Auth";
 import { useRouter } from "next/navigation";
 import PrimaryLable from "@/app/components/EleComponents/PrimaryLable";
-
+import { tokenUtils } from "@/app/Utils/TokenUtils";
 export default function Signin() {
+  const userRole = tokenUtils.getUserRole();
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -38,6 +37,12 @@ export default function Signin() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await login(user);
+
+    if (userRole === "Admin") {
+      router.push("/Admin");
+    } else {
+      router.push("/");
+    }
   };
   return (
     <>
@@ -121,7 +126,6 @@ export default function Signin() {
           </form>
         </div>
       </div>
-      <ToastContainer />
     </>
   );
 }

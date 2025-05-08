@@ -1,14 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   IAuthResponse,
+  ICompanyRequest,
+  ICompanyResponse,
   ILoginRequest,
   IRegisterRequest,
 } from "@/app/features/Type/Interfaces";
-import { BaseUrl, LoginUrl } from "@/app/features/Type/BaseUrl";
+import { BaseUrl, CompanyUrl, LoginUrl, ApiUrl } from "@/app/features/Type/BaseUrl";
 export const UserApi = createApi({
   reducerPath: "UserApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: BaseUrl + "Auth",
+    baseUrl: BaseUrl + ApiUrl + "Auth",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
 
@@ -27,7 +29,13 @@ export const UserApi = createApi({
         body: credentials,
       }),
     }),
-
+    AddCompany: builder.mutation<ICompanyResponse, ICompanyRequest>({
+      query: (credentials) => ({
+        url: CompanyUrl,
+        method: "POST",
+        body: credentials,
+      }),
+    }),
     registerUser: builder.mutation<IAuthResponse, IRegisterRequest>({
       query: (registerData) => ({
         url: "/register",

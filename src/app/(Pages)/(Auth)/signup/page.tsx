@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+
 
 import PrimaryInput from "@/app/components/EleComponents/PrimaryInput";
 import { useState } from "react";
@@ -15,16 +15,11 @@ import {
   FaFacebook,
   FaGoogle,
 } from "react-icons/fa";
-import { useRegisterUserMutation } from "@/app/features/Api/UserApi";
-import {
-  IAuthResponse,
-  IRegisterRequest,
-} from "@/app/features/Type/Interfaces";
-import { toast } from "react-toastify";
+
 import useAuth from "@/app/hooks/Auth";
 import PrimaryLable from "@/app/components/EleComponents/PrimaryLable";
 export default function SignUp() {
-  const router = useRouter();
+
   const [form, setForm] = useState({
     name: "",
     username: "",

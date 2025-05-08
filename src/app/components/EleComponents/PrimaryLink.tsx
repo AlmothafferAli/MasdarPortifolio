@@ -15,7 +15,7 @@ export default function PrimaryLink({
       href={href}
       className={`${
         className ?? ""
-      } text-bold text-4xl flex items-center gap-2 text-xl md:text-2xl  text-DarkPrimary hover:text-lightText transition-all duration-300 text-shadow-2xs `}
+      } text-bold flex items-center justify-center   gap-2 text-lg md:text-xl lg:text-xl xl:text-2xl  text-DarkPrimary hover:text-lightText transition-all duration-300 text-shadow-2xs `}
     >
       {children}
     </Link>

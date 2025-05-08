@@ -5,11 +5,13 @@ export default function PrimaryInput({
   placeholder,
   type = "text",
   className,
-  required,
+
   children,
   name,
   value,
   onChange,
+  accept,
+  multiple,
 }: IInputProps) {
   return (
     <div
@@ -24,6 +26,8 @@ export default function PrimaryInput({
         name={name}
         value={value}
         onChange={onChange} // ✅ Now it's reactive
+        accept={accept}
+        multiple={multiple}
       />
       {children}
     </div>

@@ -1,10 +1,9 @@
-"use client";
 import { Providers } from "./features/Provider";
 import "./globals.css";
-import Header from "./components/header";
-import Footer from "./components/footer";
 import ThemeProvider from "./components/ThemeProvider";
-import HeaderOverlay from "./components/HeaderOverlay";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ClientLayout from "./components/ClientLayout";
 
 export default function RootLayout({
   children,
@@ -12,28 +11,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                const theme = localStorage.getItem('theme');
-                if (theme === 'dark') {
-                  document.documentElement.classList.add('dark');
-                }
-              } catch (e) {}
-            `,
-          }}
-        />
-      </head>
-      <body className="dark:bg-darkSecondary min-h-screen flex flex-col">
+    <html lang="ar">
+      <body className="dark:bg-darkSecondary font-body min-h-screen flex flex-col">
         <Providers>
           <ThemeProvider>
-            <Header />
-            <HeaderOverlay />
-            <main className="flex-grow">{children}</main>
-            <Footer />
+            <ClientLayout>{children}</ClientLayout>
+            <ToastContainer />
           </ThemeProvider>
         </Providers>
       </body>

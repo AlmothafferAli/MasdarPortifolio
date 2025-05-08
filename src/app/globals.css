@@ -1,7 +1,18 @@
 @import "tailwindcss";
+@font-face {
+    font-family: 'PNU-Bold';
+    src: url('../../public/fonts/PNU-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'PNU-Regular';
+    src: url('../../public/fonts/PNU-Regular.ttf');
+}
+
 
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant headerToggled (&:where(.headerToggled, .headerToggled *));
+
 @theme{
     
     --color-lightBackground:#FFFFFF;
@@ -31,52 +42,6 @@
         --color-darkTransparent: rgba(0, 0, 0, 0.5);
         
         --color-lightTransparent: rgba(255, 255, 255, 0.5);
-         
-}
-
-/* Animation utilities */
-.bg-size-200 {
-  background-size: 200% 200%;
-}
-
-.bg-pos-0 {
-  background-position: 0% 50%;
-}
-
-.bg-pos-100 {
-  background-position: 100% 50%;
-}
-
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes pulse-subtle {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-
-.animate-pulse-subtle {
-  animation: pulse-subtle 4s ease-in-out infinite;
-}
-
-/* Transition utilities */
-.transition-all-cubic {
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        --font-display: 'PNU-Bold';
+        --font-body: 'PNU-Regular';
 }
