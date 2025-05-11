@@ -2,6 +2,7 @@
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 import React, { useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
+import ContactInfo from "@/app/components/ContactInfo";
 
 export default function ContactPage() {
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
@@ -183,6 +184,7 @@ export default function ContactPage() {
           </form>
         </div>
       </div>
+      <ContactInfo />
     </div>
   );
 }

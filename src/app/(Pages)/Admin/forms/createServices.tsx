@@ -18,6 +18,11 @@ export default function CreateServices({
     description: "",
     image: "",
     files: [""],
+    summary: "",
+    benefits: "",
+    features: "",
+    price: "",
+    link: "",
     companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
   });
   const [isLoading] = useState(false);
@@ -91,7 +96,7 @@ export default function CreateServices({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                 الوصف *
               </label>
               <PrimaryInput
@@ -106,6 +111,80 @@ export default function CreateServices({
               />
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                الملخص
+              </label>
+              <PrimaryInput
+                type="text"
+                value={service.summary}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setService({ ...service, summary: e.target.value })
+                }
+                placeholder="أدخل الملخص"
+                className="w-full text-right"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                الفوائد
+              </label>
+              <PrimaryInput
+                type="text"
+                value={service.benefits}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setService({ ...service, benefits: e.target.value })
+                }
+                placeholder="أدخل الفوائد"
+                className="w-full text-right"
+              />
+            </div>  
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                المزايا
+              </label>
+              <PrimaryInput
+                type="text"
+                value={service.features}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setService({ ...service, features: e.target.value })
+                }
+                placeholder="أدخل المزايا"
+                className="w-full text-right"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                السعر
+              </label>
+              <PrimaryInput
+                type="text"
+                value={service.price}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setService({ ...service, price: e.target.value })
+                }
+                placeholder="أدخل السعر"
+                className="w-full text-right"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                الرابط
+              </label>
+              <PrimaryInput
+                type="url"
+                value={service.link}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const url = e.target.value;
+                  setService({ ...service, link: url });
+                }}
+                placeholder="https://example.com"
+                className="w-full text-right"
+              />
+            </div>
+
+
+                
             <div className="pt-6">
               <PrimaryButton
                 type="submit"

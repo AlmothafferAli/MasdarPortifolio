@@ -99,7 +99,7 @@ export default function Footer() {
                     {link.text}
                   </Link>
                 </li>
-              ))}
+              ))} 
             </ul>
           </div>
 

@@ -10,7 +10,10 @@ import { useGetPServicesQuery } from "../../../../features/Api/PServiceApi";
 
 export default function PartnerPage() {
   const { id } = useParams();
-  const { data: partnerData } = useGetAllPartnersQuery();
+  const { data: partnerData } = useGetAllPartnersQuery({
+    pageNumber: 1,
+    pageSize: 10,
+  });
   const partner = (partnerData as PageResponse<IPartnerRequest>)?.data ?? [];
   const partnerDetails = partner.find((p) => p.id === id);
   const { data: services } = useGetPServicesQuery(partnerDetails?.id!);

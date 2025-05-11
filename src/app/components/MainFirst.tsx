@@ -62,7 +62,21 @@ export default function MainFirst() {
             transition={{ duration: 0.8 }}
             className="md:w-1/2"
           >
-            <div className="relative w-full aspect-square max-w-[500px] mx-auto overflow-hidden">
+             <div className="w-64 h-64">
+      <div
+        className="w-full h-full bg-cover bg-center"
+        style={{
+          backgroundImage: "url('/images/anything.png')",
+          WebkitMaskImage: "url('/images/logo.png')",
+          maskImage: "url('/images/iconT.png')",
+          WebkitMaskRepeat: "no-repeat",
+          maskRepeat: "no-repeat",
+          WebkitMaskSize: "cover",
+          maskSize: "cover",
+        }}
+      />
+    </div>
+            {/* <div className="relative w-full aspect-square max-w-[500px] mx-auto overflow-hidden">
               <AnimatePresence initial={false} mode="sync">
                 {currentImage && (
                   <motion.div
@@ -118,7 +132,7 @@ export default function MainFirst() {
                   className="w-full h-full "
                 />
               </div>
-            </div>
+            </div> */}
           </motion.div>
 
           <motion.div

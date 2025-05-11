@@ -12,9 +12,15 @@ import useServices from "@/app/hooks/useServices";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/features/Store";
 import UpdateServices from "./UpdateServices";
-
+import { useRouter } from "next/navigation";
+import { BaseUrl } from "@/app/features/Type/BaseUrl";
 interface ServiceAdminProps extends IProjectCardProps {
   id: string;
+  summary: string;
+  benefits: string;
+  features: string;
+  price: string;
+  link: string;
   onEdit?: () => void;
   onDelete?: () => void;
   isAdmin?: boolean;
@@ -25,12 +31,16 @@ export default function ServiceAdmin({
   title,
   isAdmin,
   description,
+  summary,
+  benefits,
+  features,
+  price,
+  link,
   image,
   buttonName,
   className,
   children,
   buttonClassName,
-  link,
 }: ServiceAdminProps) {
   const dispatch = useDispatch();
   const { deleteService } = useServices();
@@ -40,6 +50,7 @@ export default function ServiceAdmin({
   const { selectedServiceId } = useSelector(
     (state: RootState) => state.service
   );
+  const router = useRouter();
   console.log("http://192.168.77.191:8081/" + image);
   return (
     deletedServiceId !== id && (
@@ -49,13 +60,14 @@ export default function ServiceAdmin({
         className={`rounded-2xl p-6 shadow-lg max-w-[400px] hover:shadow-xl transition-shadow duration-300 bg-white ${
           className ?? ""
         }`}
+        dir="rtl"
       >
         <div className="flex flex-col h-full min-h-[400px]">
           {/* Image Section */}
           {image && (
-            <div className="relative w-full h-64 mb-6 rounded-xl overflow-hidden group">
+            <div className="relative w-full h-48 mb-6 rounded-xl overflow-hidden group">
               <Image
-                src={"http://192.168.77.191:8081/" + image}
+                src={BaseUrl + image}
                 alt={title || "Project image"}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -70,7 +82,7 @@ export default function ServiceAdmin({
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <div className="bg-blue-50 p-3 rounded-lg text-blue-600">
-                  {children}
+                
                 </div>
                 <h3 className="text-2xl font-semibold text-gray-800">
                   {title}
@@ -86,7 +98,12 @@ export default function ServiceAdmin({
                           name: title || "",
                           description: description || "",
                           image: image || "",
-                          files: [],
+                          summary: summary || "",
+                          benefits: benefits || "",
+                          features: features || "",
+                          price: price || "",
+                          link: link || "",
+                          files:  [],
                         })
                       );
                       setIsEditing(true);
@@ -128,17 +145,34 @@ export default function ServiceAdmin({
                 </a>
               )}
               <PrimaryButton
-                content={buttonName}
+                content={"عرض التفاصيل"}
                 className={`text-sm px-4 py-2 rounded-lg ${
                   buttonClassName ?? "bg-blue-600 text-white hover:bg-blue-700"
                 }`}
+                onClick={() => {
+                  dispatch(setSelectedserviceId(id));
+                  dispatch(
+                    setSelectedService({
+                      name: title || "",
+                      description: description || "",
+                      image: image || "",
+                      summary: summary || "",
+                      benefits: benefits || "",
+                      features: features || "",
+                      price: price || "",
+                      link: link || "",
+                      files: [],
+                    })
+                  );
+                  router.push(`/main/ServiceDetails/${id}`);
+                }}
               />
             </div>
             {isDeleting && id === selectedServiceId && (
               <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-white p-4 rounded-lg">
                   <h1 className="text-xl mb-4">
-                    Are you sure you want to delete this service?
+                    هل أنت متأكد أنك تريد حذف هذه الخدمة؟
                   </h1>
                   <div className="flex justify-end gap-2">
                     <PrimaryButton
@@ -146,7 +180,7 @@ export default function ServiceAdmin({
                         setIsDeleting(false);
                       }}
                     >
-                      Cancel
+                      الغاء
                     </PrimaryButton>
                     <PrimaryButton
                       className="bg-red-500"
@@ -157,7 +191,7 @@ export default function ServiceAdmin({
                         setIsDeleting(false);
                       }}
                     >
-                      Delete
+                      حذف
                     </PrimaryButton>
                   </div>
                 </div>

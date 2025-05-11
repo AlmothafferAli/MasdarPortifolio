@@ -4,15 +4,19 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 import { useGetAllPartnersQuery } from "@/app/features/Api/partnersApi";
-import { IPartnerDto, PageResponse } from "@/app/features/Type/Interfaces";
+import { IPartnerDto, IService, IServiceDto, PageResponse } from "@/app/features/Type/Interfaces";
 import { BaseUrl } from "@/app/features/Type/BaseUrl";
 import { useGetCompanyQuery } from "@/app/features/Api/CompanyApi";
 import ServicesCard from "../Admin/ui/ServicesCard";
+import { useGetAllServicesQuery } from "@/app/features/Api/ServicesApi";
+import Services from "@/app/components/Services";
 
 export default function About() {
   const { data: companyData } = useGetCompanyQuery();
-  console.log(companyData);
-  const { data: partnersData } = useGetAllPartnersQuery();
+  const { data: partnersData } = useGetAllPartnersQuery({
+    pageNumber: 1,
+    pageSize: 10,
+  });
   const partners = (partnersData as PageResponse<IPartnerDto>)?.data ?? [];
   const about = useMemo(() => companyData?.about, [companyData]);
   const aboutImage = useMemo(() => companyData?.aboutImage, [companyData]);
@@ -38,23 +42,8 @@ export default function About() {
       role: "مدير الشركة",
       image: "/images/team1.jpg",
     },
-  ];
-  const ServicesEx = [
-    {
-      id: "1",
-      title: "مدير الشركة",
-      description: "مدير الشركة",
-      image: "/images/team1.jpg",
-    },
-    {
-      id: "2",
-      title: "مدير الشركة",
-      description: "مدير الشركة",
-      image: "/images/team1.jpg",
-    },
-  ];
-  console.log(BaseUrl);
-  console.log(aboutImage);
+  ];  
+ 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-[#374151]">
       <div className="container mx-auto px-4 py-24 space-y-32">
@@ -95,36 +84,12 @@ export default function About() {
           </div>
         </motion.div>
 
-        {/* Services Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-gradient-to-br from-DarkPrimary/5 dark:from-[#343434] dark:to-[#0f0f0f] to-transparent p-12 rounded-2xl shadow-xl"
-        >
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">
-            خدماتنا
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {ServicesEx.map((service, index) => (
-              <ServicesCard
-                key={index}
-                id={service.id}
-                title={service.title}
-                description={service.description}
-                image={service.image}
-              />
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Team Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="space-y-12"
-        >
+        <Services />
+        
+        
+        
+        
+        
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center">
             فريق العمل
           </h2>
@@ -154,7 +119,6 @@ export default function About() {
               </motion.div>
             ))}
           </div>
-        </motion.div>
 
         {/* Partners Section */}
         <motion.div

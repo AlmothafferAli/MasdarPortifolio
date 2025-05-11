@@ -86,6 +86,11 @@ export interface IServiceUpdateRequest {
   name: string;
   description: string;
   image: string;
+  summary: string;
+  benefits: string;
+  features: string;
+  price: string;
+  link: string;
   files: string[];
 }
 export interface IprojectDto {
@@ -111,6 +116,11 @@ export interface IServiceRequest {
   description: string;
   image: string;
   files: string[];
+  summary: string;
+  benefits: string;
+  features: string;
+  price: string;
+  link: string;
   companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d";
 }
 export interface IServiceUpdateRequest {
@@ -118,19 +128,33 @@ export interface IServiceUpdateRequest {
   description: string;
   image: string;
   files: string[];
+  summary: string;
+  benefits: string;
+  features: string;
+  price: string;
+  link: string;
 }
 export interface IService {
   id: string;
   name: string;
   description: string;
   image: string;
+  summary: string;
+  benefits: string;
+  features: string;
+  price: string;
+  link: string;
 }
 
 export interface IServiceDto {
   name: string;
   description: string;
   image: string;
-  files: string[];
+  summary: string;
+  benefits: string;
+  features: string;
+  price: string;
+  link: string;
   companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d";
 }
 
@@ -140,6 +164,7 @@ export interface IPartnerRequest {
   logo: string;
   introduction: string;
   website: string;
+
 }
 export interface IPartnersCreateRequest {
   name: string;
@@ -209,3 +234,21 @@ export interface IPserviceResponse {
   description: string;
   image: string;
 }
+
+export interface IFAQCreateRequest {
+  question: string;
+  answer: string;
+  companyId: string;
+}
+export interface IFAQCreateResponse {
+  question: string;
+  answer: string;
+}
+
+export interface IFAQResponse {
+  id: string;
+  question: string;
+  answer: string;
+  companyId: string;
+}
+

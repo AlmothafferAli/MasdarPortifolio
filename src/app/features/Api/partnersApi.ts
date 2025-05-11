@@ -50,12 +50,14 @@ export const partnersApi = createApi({
         },
       }),
     }),
-    GetAllPartners: builder.query<PageResponse<IPartnerDto>, void>({
-      query: () => ({
+    GetAllPartners: builder.query<PageResponse<IPartnerDto>, { pageNumber: number, pageSize: number }>({
+      query: ({ pageNumber, pageSize }) => ({
         url: GetAll,
         method: "GET",
         params: {
           companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+          pageNumber: pageNumber,
+          pageSize: pageSize,
         },
       }),
     }),

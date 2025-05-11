@@ -6,7 +6,7 @@ import PartnerCard from "./partnercard";
 import { FaLink } from "react-icons/fa";
 
 export default function Partners() {
-  const { data: partnersData } = useGetAllPartnersQuery();
+  const { data: partnersData, isLoading } = useGetAllPartnersQuery({ pageNumber: 1, pageSize: 10 });
   const partners = (partnersData as PageResponse<IPartnerRequest>)?.data ?? [];
   return (
     <motion.div

@@ -133,6 +133,86 @@ export default function UpdateServices() {
               className="w-full"
             />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              الملخص
+            </label>
+            <PrimaryInput
+              type="text"
+              value={serviceUpdate.summary}
+              onChange={(e) => {
+                setServiceUpdate({
+                  ...serviceUpdate,
+                  summary: e.target.value,
+                });
+              }}
+              className="w-full"
+            />
+          </div>  
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              الفوائد
+            </label>
+            <PrimaryInput
+              type="text"
+              value={serviceUpdate.benefits} 
+                onChange={(e) => {
+                setServiceUpdate({
+                  ...serviceUpdate,
+                  benefits: e.target.value,
+                });
+              }}
+              className="w-full"
+            />  
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              المزايا
+            </label>
+            <PrimaryInput
+              type="text"
+              value={serviceUpdate.features}
+              onChange={(e) => {
+                setServiceUpdate({
+                  ...serviceUpdate,
+                  features: e.target.value,
+                });
+              }}
+              className="w-full"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              السعر
+            </label>
+            <PrimaryInput
+              type="text"
+              value={serviceUpdate.price}
+              onChange={(e) => {
+                setServiceUpdate({
+                  ...serviceUpdate,
+                  price: e.target.value,
+                });
+              }}
+              className="w-full"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              الرابط
+            </label>
+            <PrimaryInput
+              type="text"
+              value={serviceUpdate.link}
+              onChange={(e) => {
+                setServiceUpdate({
+                  ...serviceUpdate,
+                  link: e.target.value,
+                });
+              }}
+              className="w-full"
+            />
+          </div>
           <div className="flex justify-end gap-4 mt-6">
             <PrimaryButton
               type="button"

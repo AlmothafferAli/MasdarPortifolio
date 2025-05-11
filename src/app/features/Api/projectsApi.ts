@@ -19,7 +19,7 @@ import {
 export const projectsApi = createApi({
   reducerPath: "projectsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: BaseUrl + ApiUrl,
+    baseUrl: BaseUrl + ApiUrl + ProjectUrl,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
@@ -31,7 +31,7 @@ export const projectsApi = createApi({
   endpoints: (builder) => ({
     addProject: builder.mutation<IProjectResponse, IProjectRequest>({
       query: (project) => ({
-        url: ProjectUrl + Add,
+        url: Add,
         method: "POST",
         body: project,
       }),

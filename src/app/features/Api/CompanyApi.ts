@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ApiUrl, BaseUrl, GetAll, Update, Add, CompanyUrl, Get } from "../Type/BaseUrl";
+import { ApiUrl, BaseUrl,  Update, Add, CompanyUrl, Get } from "../Type/BaseUrl";
 import { ICompanyRequest, ICompanyResponse } from "../Type/Interfaces";
 
 export const CompanyApi = createApi({
