@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 export default function CounterUsers() {
   const decimal = [1, 5, 1];
   return (
-    <section className="bg-lightBackground dark:bg-darkSecondary py-16 ">
+    <section className="py-16">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}

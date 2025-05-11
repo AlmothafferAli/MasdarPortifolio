@@ -1,9 +1,63 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 import ProjectCard from "./ProjectCard";
 import { FaStoreAlt } from "react-icons/fa";
 
 import { useGetAllProjectsQuery } from "../features/Api/projectsApi";
+
+// Example project data
+const exampleProjects = [
+  {
+    id: 1,
+    name: "مشروع تطوير الموقع الإلكتروني",
+    description: "تطوير موقع إلكتروني متكامل مع واجهة مستخدم حديثة وتجربة مستخدم سلسة",
+    image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80"
+  },
+  {
+    id: 2,
+    name: "تطبيق الجوال للخدمات",
+    description: "تطبيق جوال متكامل يقدم خدمات متنوعة مع واجهة مستخدم سهلة الاستخدام",
+    image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
+  },
+  {
+    id: 3,
+    name: "منصة التعليم الإلكتروني",
+    description: "منصة تعليمية متكاملة تقدم محتوى تعليمي عالي الجودة مع أدوات تفاعلية",
+    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
+  },
+  {
+    id: 4,
+    name: "منصة التعليم الإلكتروني",
+    description: "منصة تعليمية متكاملة تقدم محتوى تعليمي عالي الجودة مع أدوات تفاعلية",
+    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
+  },
+  {
+    id: 5,
+    name: "منصة التعليم الإلكتروني",
+    description: "منصة تعليمية متكاملة تقدم محتوى تعليمي عالي الجودة مع أدوات تفاعلية",
+    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
+  },
+  {
+    id: 6,
+    name: "منصة التعليم الإلكتروني",
+    description: "منصة تعليمية متكاملة تقدم محتوى تعليمي عالي الجودة مع أدوات تفاعلية",
+    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
+  },
+  {
+    id: 7,
+    name: "منصة التعليم الإلكتروني",
+    description: "منصة تعليمية متكاملة تقدم محتوى تعليمي عالي الجودة مع أدوات تفاعلية",
+    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
+  },
+  {
+    id: 8,
+    name: "منصة التعليم الإلكتروني",
+    description: "منصة تعليمية متكاملة تقدم محتوى تعليمي عالي الجودة مع أدوات تفاعلية",
+    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
+  }
+
+  
+];
 
 export default function Projects() {
   // const { getAllProjects } = useProjects();
@@ -16,15 +70,16 @@ export default function Projects() {
 
   const { data } = useGetAllProjectsQuery({ PageNumber: 1, PageSize: 10 });
 
-  const projects = data?.data ?? [];
+  // Use example data if no data is fetched
+  const projects = data?.data && data.data.length > 0 ? data.data : exampleProjects;
 
   const cardColors = [
-    "bg-gradient-to-br from-blue-500 to-blue-600",
-    "bg-gradient-to-br from-purple-500 to-purple-600",
-    "bg-gradient-to-br from-pink-500 to-pink-600",
-    "bg-gradient-to-br from-green-500 to-green-600",
-    "bg-gradient-to-br from-orange-500 to-orange-600",
-    "bg-gradient-to-br from-teal-500 to-teal-600",
+    "#1E40AF", // deep blue
+    "#374151", // slate gray
+    "#0F766E", // teal
+    "#065F46", // forest green
+    "#7C3AED", // deep purple
+    "#9F1239", // burgundy
   ];
   // useEffect(() => {
   //   fetchProjects();
@@ -32,7 +87,7 @@ export default function Projects() {
 
   return (
     <section
-      className="py-24 w-full bg-white dark:bg-gray-900"
+      className="py-16 md:py-24 w-full"
       id="projects"
     >
       <motion.div
@@ -59,27 +114,37 @@ export default function Projects() {
         </div>
 
         <div className="relative">
-          {/* Left fade */}
-          <div className="absolute left-0 top-0 bottom-0 w-128 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10 pointer-events-none" />
-          
-          {/* Right fade */}
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10 pointer-events-none" />
-
-          <div className="flex overflow-x-auto gap-8 pb-8 snap-x snap-mandatory scrollbar-hide px-4">
+          {/* Project cards container */}
+          <div className="flex overflow-x-auto gap-2 md:gap-8 pb-8  snap-x snap-mandatory scrollbar-hide px-4">
             {projects && projects.length > 0 ? (
               projects.map((project, index) => (
-                <div key={index} className="flex-none w-[400px] snap-center">
+                <motion.div 
+                  key={index} 
+                  className="flex-none w-[300px] md:w-[400px] snap-start"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ 
+                    opacity: 1,
+                    transition: {
+                      type: "spring",
+                      stiffness: 100,
+                      damping: 20,
+                      mass: 1
+                    }
+                  }}
+                  viewport={{ once: true, margin: "-100px" }}
+                >
                   <ProjectCard
                     title={project.name}
                     description={project.description}
                     image={project.image}
                     buttonName="عرض التفاصيل"
+                    color={cardColors[index % cardColors.length]}
                   />
-                </div>
+                </motion.div>
               ))
             ) : (
               <div className="w-full text-center py-10">
-                <p className="text-xl text-gray-500 dark:text-gray-400">
+                <p className="text-xl text-gray-500 ">
                   لا توجد مشاريع متاحة حالياً
                 </p>
               </div>

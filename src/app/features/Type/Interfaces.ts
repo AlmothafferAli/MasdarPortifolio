@@ -235,20 +235,20 @@ export interface IPserviceResponse {
   image: string;
 }
 
-export interface IFAQCreateRequest {
+
+export interface IFAQ {
   question: string;
   answer: string;
-  companyId: string;
+  companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d";
 }
-export interface IFAQCreateResponse {
+export interface IFAQUpdateRequest {
+  id: string;
+  question: string;
+  answer: string;
+}
+export interface IFAQDto{
   question: string;
   answer: string;
 }
 
-export interface IFAQResponse {
-  id: string;
-  question: string;
-  answer: string;
-  companyId: string;
-}
 

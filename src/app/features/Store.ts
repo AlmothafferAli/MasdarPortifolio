@@ -17,6 +17,8 @@ import employeeReducer from "./appSlice/EmployeeSlice";
 import { PServiceApi } from "./Api/PServiceApi";
 import pserviceReducer from "./appSlice/PserviceSlice";
 import { pserviceSlice } from "./appSlice/PserviceSlice";
+import { FAQApi } from "./Api/FAQApi";
+import faqReducer from "./appSlice/FAQSlice";
 const rootReducer = combineReducers({
   [UserApi.reducerPath]: UserApi.reducer,
   [CompanyApi.reducerPath]: CompanyApi.reducer,
@@ -32,7 +34,9 @@ const rootReducer = combineReducers({
   partner: partnerReducer,
   pservice: pserviceReducer,
   employee: employeeReducer,
+  faq: faqReducer,
   [serviceSlice.reducerPath]: serviceSlice.reducer,
+  [FAQApi.reducerPath]: FAQApi.reducer,
 });
 const store = configureStore({
   reducer: rootReducer,
@@ -45,7 +49,8 @@ const store = configureStore({
       fileApi.middleware,
       partnersApi.middleware,
       EmployeeApi.middleware,
-      PServiceApi.middleware
+      PServiceApi.middleware,
+      FAQApi.middleware
     ),
   devTools: true,
 });

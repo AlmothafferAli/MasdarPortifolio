@@ -2,7 +2,7 @@ import ImageWithLoader from "./ImageWithLoader";
 
 export default function Ads1() {
     return (
-        <div className="flex flex-col md:flex-row items-center justify-between p-6 md:p-12 lg:p-20 px-4 md:px-20 lg:px-50 bg-white dark:bg-gradient-to-b from-[#101828] to-[#374151] rounded-xl shadow-xl gap-8 md:gap-0">
+        <div className="flex flex-col md:flex-row items-center justify-between p-6 md:p-12 lg:p-20 px-4 md:px-20 lg:px-50 rounded-xl gap-8 md:gap-0">
             {/* Left side - Arabic text and price */}
             <div className="flex flex-col gap-4 md:gap-6 lg:gap-8 text-center md:text-right">
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold dark:text-gray-300" dir="rtl">

@@ -33,6 +33,9 @@ import EmployeeCards from "./ui/EmployeeCards";
 import { useGetEmployeesQuery } from "@/app/features/Api/EmployeeApi";
 import Sidebar from "./ui/Sidebar";
 import Header from "./ui/Header";
+import CreateFAQ from "./forms/CreateCommunication";
+import FAQCards from "./ui/fetchFAQ";
+import { useGetAllFAQsQuery } from "@/app/features/Api/FAQApi";
 
 export default function AdminPage() {
   const [activeItem, setActiveItem] = useState<string>("setup");
@@ -45,6 +48,7 @@ export default function AdminPage() {
   const [isAddPartner, setIsAddPartner] = useState(false);
   const [isEditMain, setIsEditMain] = useState(false);
   const [isAddEmployee, setIsAddEmployee] = useState(false);
+  const [isAddCommunication, setIsAddCommunication] = useState(false);  
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
 
@@ -58,7 +62,8 @@ export default function AdminPage() {
     pageNumber: page,
     pageSize: 10,
   });
-
+  const { data: faqsData } = useGetAllFAQsQuery({ pageSize: 10, pageNumber: 1 });
+  
   const employees = useMemo(() => employeesData?.data ?? [], [employeesData]);
   const projects = useMemo(() => projectsData?.data ?? [], [projectsData]);
   const services = useMemo(() => servicesData?.data ?? [], [servicesData]);
@@ -66,7 +71,7 @@ export default function AdminPage() {
     () => (partnersData as PageResponse<IPartnerRequest>)?.data ?? [],
     [partnersData]
   );
-
+  const faqs = useMemo(() => faqsData?.data ?? [], [faqsData]);
   const company = useSelector((state: RootState) => state.company.company);
 
   const handleButtonClick = () => {
@@ -88,6 +93,9 @@ export default function AdminPage() {
         break;
       case "partners":
         setIsAddPartner(!isAddPartner);
+        break;
+      case "communication":
+        setIsAddCommunication(!isAddCommunication);
         break;
     }
   };
@@ -128,12 +136,12 @@ export default function AdminPage() {
     }
   }, [activeItem]);
 
-  return (
-    <div className="flex flex-col md:flex-row-reverse h-screen bg-gray-100">
+  return ( 
+    <div className="flex flex-col md:flex-col lg:flex-row-reverse h-screen bg-gray-100">
       <Sidebar activeItem={activeItem} setActiveItem={setActiveItem} />
 
       {/* Main Content */}
-      <div className="flex-1 bg-gray-50 md:absolute md:inset-0 md:top-0 md:right-0 z-20 md:h-full md:rounded-r-3xl shadow-2xl p-8 pt-8 w-full md:w-[86%] flex flex-col gap-6">
+      <div className={`flex-1 bg-gray-50 lg:absolute lg:inset-0 lg:top-0 lg:right-0 z-20 lg:h-full lg:rounded-r-3xl shadow-2xl p-4 lg:p-8 pt-4 lg:pt-8 max-w-full lg:max-w-[calc(100%-200px)] 2xl:max-w-[calc(100%-230px)] flex flex-col gap-4 md:gap-6`}>
         <Header 
           text={text} 
           buttonText={buttonText} 
@@ -142,11 +150,11 @@ export default function AdminPage() {
 
         {/* Content */}
         {activeItem !== "setup" && (
-          <div className="bg-white rounded-2xl shadow-lg p-8 h-full overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-lg p-4 md:p-8 h-full overflow-hidden">
             {/* Content will be rendered here based on activeItem */}
             {activeItem === "projects" && (
               <div className="flex flex-col justify-between h-full">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 overflow-y-auto  pb-8 mt-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 overflow-y-auto pb-8 mt-4 md:mt-6">
                   {projects.map((project) => (
                     <ProjectAdminCard
                       key={project.id}
@@ -208,7 +216,7 @@ export default function AdminPage() {
             )}
             {activeItem === "partners" && (
               <div className="flex flex-col justify-between h-full">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 overflow-y-auto max-h-[62vh] pb-8 mt-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 overflow-y-auto max-h-[62vh] pb-8 mt-4 md:mt-6">
                   {partners.map((partner: IPartnerRequest) => (
                     <PartnerAdmin
                       key={partner.id}
@@ -234,9 +242,18 @@ export default function AdminPage() {
                 </div>
               </div>
             )}
+            {activeItem === "communication" && (
+              <div className="flex flex-col justify-between h-full">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 overflow-y-auto max-h-[62vh] pb-8 mt-4 md:mt-6">
+                  {faqs.map((faq) => (
+                    <FAQCards key={faq.id} faq={faq} />
+                  ))}
+                </div>
+              </div>
+            )}
             {activeItem === "employees" && (
               <div className="flex flex-col justify-between h-full">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 overflow-y-auto max-h-[62vh] pb-8 mt-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 overflow-y-auto max-h-[62vh] pb-8 mt-4 md:mt-6">
                   {employees.map((employee) => (
                     <EmployeeCards
                       key={employee.id}
@@ -263,11 +280,8 @@ export default function AdminPage() {
             )}
 
             {activeItem === "services" && (
-
-              <div className="flex flex-col justify-between h-full"
-              dir="rtl"
-              >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-6 px-8 overflow-y-auto max-h-[62vh] pb-8">
+              <div className="flex flex-col justify-between h-full" dir="rtl">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8 mt-4 md:mt-6 px-2 md:px-8 overflow-y-auto max-h-[62vh] pb-8">
                   {services.map((service) => (
                     <ServiceAdmin
                       key={service.id}
@@ -337,6 +351,11 @@ export default function AdminPage() {
         {isAddEmployee && (
           <div className="bg-white rounded-2xl shadow-lg p-8 h-full">
             <CreateEmployee setIsAddEmployee={setIsAddEmployee} />
+          </div>
+        )}
+        {isAddCommunication && (
+          <div className="bg-white rounded-2xl shadow-lg p-8 h-full">
+            <CreateFAQ setIsAddFAQ={setIsAddCommunication} />
           </div>
         )}
       </div>

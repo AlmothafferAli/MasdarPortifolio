@@ -1,4 +1,4 @@
-import { IEmployee } from "./Interfaces";
+import { IEmployee, IFAQ, IFAQUpdateRequest } from "./Interfaces";
 
 export interface IButtonProps {
   onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
@@ -25,6 +25,7 @@ export interface IProjectCardProps {
   children?: React.ReactNode;
   buttonClassName?: string;
   buttonName?: string;
+  color?: string;
   icon?: React.ReactNode;
 }
 export interface IEmployeeCardsProps {
@@ -58,5 +59,9 @@ export interface IAouth2Props {
 export interface Idecimal {
   children?: React.ReactNode;
   dec?: number;
+  className?: string;
+}
+export interface IFAQCardsProps {
+  faq?: IFAQUpdateRequest;
   className?: string;
 }

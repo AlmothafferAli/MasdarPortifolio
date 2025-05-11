@@ -51,45 +51,44 @@ export default function ServiceAdmin({
     (state: RootState) => state.service
   );
   const router = useRouter();
-  console.log("http://192.168.77.191:8081/" + image);
   return (
     deletedServiceId !== id && (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`rounded-2xl p-6 shadow-lg max-w-[400px] hover:shadow-xl transition-shadow duration-300 bg-white ${
+        className={`rounded-2xl p-4 shadow-lg w-[400px] h-[450px] hover:shadow-xl transition-all duration-300 bg-white dark:bg-gray-800 ${
           className ?? ""
         }`}
         dir="rtl"
       >
-        <div className="flex flex-col h-full min-h-[400px]">
+        <div className="flex flex-col h-full">
           {/* Image Section */}
           {image && (
-            <div className="relative w-full h-48 mb-6 rounded-xl overflow-hidden group">
+            <div className="relative w-full h-48 mb-2 rounded-xl overflow-hidden group">
               <Image
-                src={BaseUrl + image}
+                src={BaseUrl+image}
                 alt={title || "Project image"}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
+            </div>  
           )}
 
           {/* Content Section */}
-          <div className="flex-1 flex flex-col space-y-4">
+          <div className="flex-1 flex flex-col space-y-1.5">
             <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <div className="bg-blue-50 p-3 rounded-lg text-blue-600">
+              <div className="flex items-center gap-2">
+                <div className="bg-blue-50 dark:bg-blue-900/30 p-2 rounded-lg text-blue-600 dark:text-blue-400">
                 
                 </div>
-                <h3 className="text-2xl font-semibold text-gray-800">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100 line-clamp-1">
                   {title}
                 </h3>
               </div>
               {isAdmin && (
-                <div className="flex gap-2">
+                <div className="flex gap-1">
                   <button
                     onClick={() => {
                       dispatch(setSelectedserviceId(id));
@@ -108,46 +107,46 @@ export default function ServiceAdmin({
                       );
                       setIsEditing(true);
                     }}
-                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+                    className="p-1.5 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors duration-200"
                     title="Edit"
                   >
-                    <FaEdit className="w-4 h-4" />
+                    <FaEdit className="w-3.5 h-3.5" />
                   </button>
 
                   <button
-                    className="text-red-500"
+                    className="text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 p-1.5 rounded-lg transition-colors duration-200"
                     onClick={() => {
                       dispatch(setSelectedserviceId(id));
                       setIsDeleting(true);
                     }}
                   >
-                    <FaTrash className="w-4 h-4" />
+                    <FaTrash className="w-3.5 h-3.5" />
                   </button>
                 </div>
               )}
             </div>
 
-            <p className="text-gray-600 text-base leading-relaxed line-clamp-3 flex-1">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-2 flex-1">
               {description}
             </p>
 
             {/* Action Buttons */}
-            <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
+            <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100 dark:border-gray-700">
               {link && (
                 <a
                   href={"/" + link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors duration-200"
+                  className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200"
                 >
-                  <FaLink className="w-4 h-4" />
-                  <span className="text-sm">View Service</span>
+                  <FaLink className="w-3.5 h-3.5" />
+                  <span className="text-xs">View Service</span>
                 </a>
               )}
               <PrimaryButton
                 content={"عرض التفاصيل"}
-                className={`text-sm px-4 py-2 rounded-lg ${
-                  buttonClassName ?? "bg-blue-600 text-white hover:bg-blue-700"
+                className={`text-xs px-3 py-1.5 rounded-lg ${
+                  buttonClassName ?? "bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-800"
                 }`}
                 onClick={() => {
                   dispatch(setSelectedserviceId(id));
@@ -170,8 +169,8 @@ export default function ServiceAdmin({
             </div>
             {isDeleting && id === selectedServiceId && (
               <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                <div className="bg-white p-4 rounded-lg">
-                  <h1 className="text-xl mb-4">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
+                  <h1 className="text-xl mb-4 text-gray-900 dark:text-gray-100">
                     هل أنت متأكد أنك تريد حذف هذه الخدمة؟
                   </h1>
                   <div className="flex justify-end gap-2">
@@ -183,7 +182,7 @@ export default function ServiceAdmin({
                       الغاء
                     </PrimaryButton>
                     <PrimaryButton
-                      className="bg-red-500"
+                      className="bg-red-500 dark:bg-red-600 hover:bg-red-600 dark:hover:bg-red-700"
                       onClick={async () => {
                         await deleteService(id);
                         setDeletedServiceId(id);

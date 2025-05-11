@@ -62,13 +62,13 @@ export default function MainFirst() {
             transition={{ duration: 0.8 }}
             className="md:w-1/2"
           >
-             <div className="w-64 h-64">
+             <div className="w-128 h-128">
       <div
         className="w-full h-full bg-cover bg-center"
         style={{
-          backgroundImage: "url('/images/anything.png')",
+          backgroundImage: `url('${ BaseUrl}/${currentImage}')`,
           WebkitMaskImage: "url('/images/logo.png')",
-          maskImage: "url('/images/iconT.png')",
+          maskImage: "url('/images/logo.png')",
           WebkitMaskRepeat: "no-repeat",
           maskRepeat: "no-repeat",
           WebkitMaskSize: "cover",

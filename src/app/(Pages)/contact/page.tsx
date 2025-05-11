@@ -3,9 +3,10 @@ import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 import React, { useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import ContactInfo from "@/app/components/ContactInfo";
-
+import { useGetAllFAQsQuery } from "@/app/features/Api/FAQApi";
 export default function ContactPage() {
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
+  const { data: faqs, isLoading, error } = useGetAllFAQsQuery({ pageSize: 10, pageNumber: 1 });
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -13,24 +14,7 @@ export default function ContactPage() {
     message: "",
   });
 
-  const FAQ = [
-    {
-      question: "ما هي أسعار الخدمات؟",
-      answer:
-        "يمكنك التواصل معنا عبر البريد الإلكتروني أو الهاتف الموجود في الصفحة.",
-    },
-    {
-      question: "هل مصدر يقدم برامج مخصصة للشركات؟",
-      answer:
-        "نعم، نقدم برامج مخصصة للشركات والمؤسسات. يمكنك التواصل معنا لمناقشة الخدمات المخصصة التي نقدمها.",
-    },
-    {
-      question: "ما هي أسعار الخدمات؟",
-      answer:
-        "يمكنك التواصل معنا عبر البريد الإلكتروني أو الهاتف الموجود في الصفحة.",
-    },
-  ];
-
+  
   const handleAccordionClick = (index: number) => {
     setActiveAccordion(activeAccordion === index ? null : index);
   };
@@ -63,12 +47,14 @@ export default function ContactPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-12">
-        <div className="FAQ  bg-DarkPrimary/80 dark:bg-darkPrimary  transition-shadow duration-300  p-8 rounded-xl shadow-lg hover:shadow-xl">
+        <div className="FAQ  bg-DarkPrimary/80   transition-shadow duration-300  p-8 rounded-xl shadow-lg hover:shadow-xl">
           <h1 className="text-2xl font-bold text-white dark:text-[#fdfdfd]  mb-8">
             أسألة متداولة
           </h1>
           <div className="accordion space-y-4">
-            {FAQ.map((item, index) => (
+            {isLoading && <div>جاري تحميل البيانات...</div>}
+            {error && <div>حدث خطأ</div>}
+            {faqs?.data?.map((item, index) => (
               <div
                 className="accordion-item border-b border-gray-200 dark:border-gray-800"
                 key={index}

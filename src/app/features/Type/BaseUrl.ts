@@ -1,4 +1,5 @@
-export const BaseUrl = "http://192.168.77.191/";
+//export const BaseUrl = "http://192.168.77.191/";
+export const BaseUrl = "https://myaspnet.loca.lt/";
 export const ApiUrl = "api/";
 export const LoginUrl = "/Login";
 export const RegisterUrl = "/Register";

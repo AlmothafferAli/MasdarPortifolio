@@ -13,12 +13,14 @@ export default function page() {
       {/* Hero Section */}
       <MainFirst />
       {/* Projects Section */}
-      <Services />
-      <Projects />
-      <Ads1 />
-      {/* counterUsers Section */}
-      <CounterUsers />
-      <Partners />
+      <div className="dark:bg-gradient-to-b dark:from-[#0a192f] dark:to-[#364050]">
+        <Services />
+        <Projects />
+        <Ads1 />
+        {/* counterUsers Section */}
+        <CounterUsers />
+        <Partners />
+      </div>
     </div>
   );
 }
