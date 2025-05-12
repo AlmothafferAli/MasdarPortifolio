@@ -1,63 +1,9 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion  } from "framer-motion";
 
 import ProjectCard from "./ProjectCard";
-import { FaStoreAlt } from "react-icons/fa";
 
 import { useGetAllProjectsQuery } from "../features/Api/projectsApi";
-
-// Example project data
-const exampleProjects = [
-  {
-    id: 1,
-    name: "مشروع تطوير الموقع الإلكتروني",
-    description: "تطوير موقع إلكتروني متكامل مع واجهة مستخدم حديثة وتجربة مستخدم سلسة",
-    image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80"
-  },
-  {
-    id: 2,
-    name: "تطبيق الجوال للخدمات",
-    description: "تطبيق جوال متكامل يقدم خدمات متنوعة مع واجهة مستخدم سهلة الاستخدام",
-    image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
-  },
-  {
-    id: 3,
-    name: "منصة التعليم الإلكتروني",
-    description: "منصة تعليمية متكاملة تقدم محتوى تعليمي عالي الجودة مع أدوات تفاعلية",
-    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
-  },
-  {
-    id: 4,
-    name: "منصة التعليم الإلكتروني",
-    description: "منصة تعليمية متكاملة تقدم محتوى تعليمي عالي الجودة مع أدوات تفاعلية",
-    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
-  },
-  {
-    id: 5,
-    name: "منصة التعليم الإلكتروني",
-    description: "منصة تعليمية متكاملة تقدم محتوى تعليمي عالي الجودة مع أدوات تفاعلية",
-    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
-  },
-  {
-    id: 6,
-    name: "منصة التعليم الإلكتروني",
-    description: "منصة تعليمية متكاملة تقدم محتوى تعليمي عالي الجودة مع أدوات تفاعلية",
-    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
-  },
-  {
-    id: 7,
-    name: "منصة التعليم الإلكتروني",
-    description: "منصة تعليمية متكاملة تقدم محتوى تعليمي عالي الجودة مع أدوات تفاعلية",
-    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
-  },
-  {
-    id: 8,
-    name: "منصة التعليم الإلكتروني",
-    description: "منصة تعليمية متكاملة تقدم محتوى تعليمي عالي الجودة مع أدوات تفاعلية",
-    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
-  }
-
-  
-];
+import PrimaryButton from "./EleComponents/PrimaryButton";
 
 export default function Projects() {
   // const { getAllProjects } = useProjects();
@@ -68,10 +14,10 @@ export default function Projects() {
   //   if (data) setProjects(data);
   // };
 
-  const { data } = useGetAllProjectsQuery({ PageNumber: 1, PageSize: 10 });
+  const { data } = useGetAllProjectsQuery({ pageNumber: 1, pageSize: 10 });
 
   // Use example data if no data is fetched
-  const projects = data?.data && data.data.length > 0 ? data.data : exampleProjects;
+  const projects = data?.data ;
 
   const cardColors = [
     "#1E40AF", // deep blue
@@ -152,16 +98,12 @@ export default function Projects() {
           </div>
         </div>
 
-        <div className="mt-16 text-center">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors duration-300"
-          >
-            عرض جميع المشاريع
-          </motion.button>
-        </div>
-      </motion.div>
+{projects && projects.length > 0 ? (
+                <div className="mt-16 text-center">
+                   <PrimaryButton content="عرض المزيد" className="bg-DarkPrimary text-white hover:opacity-90 transition-all" />
+                </div>
+                ) : ""}
+                  </motion.div>
     </section>
   );
 }

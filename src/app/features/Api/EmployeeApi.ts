@@ -21,12 +21,14 @@ export const EmployeeApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getEmployees: builder.query<PageResponse<IEmployee>, void>({
-      query: () => ({
+    getEmployees: builder.query<PageResponse<IEmployee>, { pageNumber: number, pageSize: number }>({
+      query: ({ pageNumber, pageSize }) => ({
         url: GetAll,
         method: "GET",
         params: {
           companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+          pageNumber: pageNumber,
+          pageSize: pageSize,
         },
       }),
     }),

@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import HeaderPull from "./EleComponents/headerPull";
 import { useDispatch, useSelector } from "react-redux";
+import { motion } from "framer-motion";
 
 import type { RootState } from "../features/Store"; // make sure this path is correct
 import {
@@ -48,11 +48,7 @@ export default function Header() {
       text: "من نحن",
       icon: <FaInfoCircle />,
     },
-    {
-      href: "/profile",
-      text: "الملف الشخصي",
-      icon: <FaUser />,
-    },
+    
     {
       href: "/contact",
       text: "اتصل بنا",
@@ -73,15 +69,15 @@ export default function Header() {
     >
       <div
         className={`flex justify-center items-center rounded-b-2xl w-full bg-lightBackground backdrop-blur-sm bg-opacity-95 w-screen md:w-3/4 lg:w-2/3 shadow-lg ${
-          isToggled ? "min-h-[180px] md:min-h-[80px] py-4 md:py-4" : "h-0 min-h-0 py-0"
+          isToggled ? "h-[180px] md:h-[80px] py-4 md:py-4" : "h-0 py-0"
         } transition-all duration-700 ease-in-out overflow-hidden`}
       >
         <div className="flex justify-between w-full md:w-full md:px-8 flex-col md:flex-row-reverse">
         <div className="flex justify-center items-center order-2 md:order-1">
             <ImageWithLoader
               className={`${
-                isToggled ? "opacity-100 scale-50 md:scale-75" : "opacity-0 scale-95"
-              } transition-all duration-500 ease-in-out hidden md:block`}
+                isToggled ? "opacity-100 scale-100" : "opacity-0 scale-90"
+              } transition-all duration-300 ease-out transform hidden md:block`}
               src={"/images/iconBlue.png"}
               alt="logo"
               width={100}
@@ -95,37 +91,38 @@ export default function Header() {
               isToggled
                 ? "grid grid-cols-2 md:flex md:flex-row w-full md:min-w-md gap-8 md:gap-2 order-1 md:order-2 px-16 md:px-0"
                 : "hidden"
-            } transition-all duration-700 ease-in-out`}
+            } transition-all duration-300 ease-out`}
             style={{
               visibility: isToggled ? 'visible' : 'hidden',
-              transition: 'visibility 0s linear 0.7s'
+              transition: 'visibility 0s linear 0.3s'
             }}
           >
-            {links.map((link) => (
-              <div
+            {links.map((link, index) => (
+              <motion.div
                 key={link.href}
                 className="flex sm:min-w-20 px-4"
-                onClick={() => {}}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isToggled ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
               >
                 <PrimaryLink
                   href={link.href}
-                  className="text-base md:text-xl hover:scale-105 transition-all duration-500 ease-in-out flex items-center gap-2 md:gap-3 group relative"
+                  className="text-base md:text-xl hover:scale-105 transition-all duration-300 ease-out flex items-center gap-2 md:gap-3 group relative"
                 >
-                  <div className="flex items-center transition-all duration-500 ease-in-out gap-2">
-                    <span className="text-xl md:text-2xl flex-shrink-0 ml-1 md:ml-2 transform transition-all duration-500 ease-in-out">{link.icon}</span>
-                    <span className="max-w-[150px] md:max-w-0 md:group-hover:max-w-[200px] overflow-hidden transition-all duration-700 ease-in-out whitespace-nowrap text-lg md:text-2xl font-medium">
+                  <div className="flex items-center transition-all duration-300 ease-out gap-2">
+                    <span className="text-xl md:text-2xl flex-shrink-0 ml-1 md:ml-2 transform transition-all duration-300 ease-out ">{link.icon}</span>
+                    <span className="max-w-[150px] md:max-w-0 md:group-hover:max-w-[200px] overflow-hidden transition-all duration-300 ease-out whitespace-nowrap text-lg md:text-2xl font-medium">
                       {link.text}
                     </span>
                   </div>
                 </PrimaryLink>
-              </div>
+              </motion.div>
             ))}
           </div>
-
         </div>
       </div>
       <ButtonTheme
-        className="z-[99999] transform hover:rotate-12 transition-transform duration-300 absolute top-2 right-2 md:top-4 md:right-4"
+        className="z-[99999] transform hover:rotate-12 transition-transform duration-300 ease-out absolute top-2 right-2 md:top-4 md:right-4"
         onClick={toggleTheme}
         aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       >

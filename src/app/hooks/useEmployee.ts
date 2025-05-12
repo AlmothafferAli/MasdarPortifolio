@@ -6,25 +6,18 @@ import {
 } from "../features/Api/EmployeeApi";
 import { useGetEmployeesQuery } from "../features/Api/EmployeeApi";
 import { IEmployeeDto } from "../features/Type/Interfaces";
+import { handleError } from "./useHandleError";
 
 export const useEmployee = () => {
-  const { data, isLoading, error } = useGetEmployeesQuery();
+  const { data, isLoading, error } = useGetEmployeesQuery({pageNumber:1,pageSize:10});
   const [addEmployee, { isLoading: isAddingEmployee }] =
     useAddEmployeeMutation();
   const [updateEmployeeMutation, { isLoading: isUpdatingEmployee }] =
     useUpdateEmployeeMutation();
   const [deleteEmployeeMutation, { isLoading: isDeletingEmployee }] =
     useDeleteEmployeeMutation();
-  const handleError = (error: any) => {
-    console.table(error);
-    toast.error(
-      `${
-        (error as { data?: { message?: string } }).data?.message ||
-        "Failed to create employee"
-      }`
-    );
-  };
-  const createEmployee = async (employee: IEmployeeDto) => {
+
+    const createEmployee = async (employee: IEmployeeDto) => {
     if (
       !employee.name ||
       !employee.description ||
@@ -38,8 +31,8 @@ export const useEmployee = () => {
     try {
       await addEmployee(employee).unwrap();
       toast.success("Employee created successfully");
-    } catch (error) {
-      handleError(error);
+    } catch (error: unknown) {
+      handleError(error as { data?: { message?: string } });
     }
   };
   const updateEmployee = async (employee: IEmployeeDto, id: string) => {
@@ -49,7 +42,7 @@ export const useEmployee = () => {
       return response;
     } catch (error) {
       console.table(error);
-      handleError(error);
+      handleError(error as { data?: { message?: string } });
     }
   };
   const deleteEmployee = async (id: string) => {
@@ -59,7 +52,7 @@ export const useEmployee = () => {
       return response;
     } catch (error) {
       console.table(error);
-      handleError(error);
+      handleError(error as { data?: { message?: string } });
     }
   };
 

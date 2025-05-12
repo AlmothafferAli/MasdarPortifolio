@@ -3,16 +3,13 @@
 
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 import { useGetAllServicesQuery } from "@/app/features/Api/ServicesApi";
-import { RootState } from "@/app/features/Store";
 import { BaseUrl } from "@/app/features/Type/BaseUrl";
-import { IService, IServiceRequest, PageResponse } from "@/app/features/Type/Interfaces";
+import { IService, PageResponse } from "@/app/features/Type/Interfaces";
 import  ButtonTheme  from "@/app/components/EleComponents/ButtonTheme";
 import { PlayCircle } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { FaSun } from "react-icons/fa";
 import { tokenUtils } from "@/app/Utils/TokenUtils";
 export default function ProductPage({
 
@@ -20,7 +17,7 @@ export default function ProductPage({
   const Admin = tokenUtils.getUserRole() === "Admin";
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const { id } = useParams();
-  const { data: serviceData } = useGetAllServicesQuery();
+  const { data: serviceData } = useGetAllServicesQuery({pageNumber:1,pageSize:10});
   const service = (serviceData as PageResponse<IService>)?.data ?? [];
   const serviceDetails = service.find((p) => p.id === id);
  const serviceLists = {

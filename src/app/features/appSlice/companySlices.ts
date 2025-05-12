@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ICompanyRequest, ICompanyResponse } from "../Type/Interfaces";
-import { useGetCompanyQuery } from "../Api/CompanyApi";
 import CompanyApi from "../Api/CompanyApi";
 
 export interface ICompanyState {

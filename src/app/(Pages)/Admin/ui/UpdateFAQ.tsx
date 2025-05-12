@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { IFAQ } from "@/app/features/Type/Interfaces";
 import PrimaryInput from "@/app/components/EleComponents/PrimaryInput";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";

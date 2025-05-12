@@ -1,5 +1,4 @@
 import { toggle } from "@/app/features/appSlice/headerSlice";
-import Image from "next/image";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import ImageWithLoader from "../ImageWithLoader";

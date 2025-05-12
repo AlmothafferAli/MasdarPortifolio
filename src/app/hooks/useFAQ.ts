@@ -5,6 +5,7 @@ import {
   useUpdateFAQMutation,
 } from "../features/Api/FAQApi";
 import { IFAQ } from "../features/Type/Interfaces";
+import { handleError } from "./useHandleError";
 
 export const useFAQ = () => {
   const [addFAQ, { isLoading: isAddingFAQ }] =
@@ -13,15 +14,6 @@ export const useFAQ = () => {
     useUpdateFAQMutation();
   const [deleteFAQMutation, { isLoading: isDeletingFAQ }] =
     useDeleteFAQMutation();
-  const handleError = (error: any) => {
-    console.table(error);
-    toast.error(
-      `${
-        (error as { data?: { message?: string } }).data?.message ||
-        "Failed to create employee"
-      }`
-    );
-  };
   const createFAQ = async (FAQ: IFAQ) => {
     if (
       !FAQ.question ||
@@ -34,8 +26,8 @@ export const useFAQ = () => {
     try {
       await addFAQ(FAQ).unwrap();
       toast.success("FAQ created successfully");
-    } catch (error) {
-      handleError(error);
+    } catch (error: unknown) {
+      handleError(error as { data?: { message?: string } });
     }
   };
   const updateFAQ = async (FAQ: IFAQ, id: string) => {
@@ -43,9 +35,9 @@ export const useFAQ = () => {
       const response = await updateFAQMutation({ id, faq: FAQ }).unwrap();
       toast.success("FAQ updated successfully");
       return response;
-    } catch (error) {
+    } catch (error: unknown) {
       console.table(error);
-      handleError(error);
+      handleError(error as { data?: { message?: string } });
     }
   };
   const deleteFAQ = async (id: string) => {
@@ -53,9 +45,9 @@ export const useFAQ = () => {
       const response = await deleteFAQMutation(id).unwrap();
       toast.success("Employee deleted successfully");
       return response;
-    } catch (error) {
+    } catch (error: unknown) {
       console.table(error);
-      handleError(error);
+      handleError(error as { data?: { message?: string } });
     }
   };
 

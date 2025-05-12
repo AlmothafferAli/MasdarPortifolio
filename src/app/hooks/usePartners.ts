@@ -1,36 +1,22 @@
 import { toast } from "react-toastify";
-import {
-  useAddEmployeeMutation,
-  useDeleteEmployeeMutation,
-  useUpdateEmployeeMutation,
-} from "../features/Api/EmployeeApi";
 import { useGetAllPartnersQuery } from "../features/Api/partnersApi";
 import {
-  IPartner,
   IPartnerDto,
   IPartnersCreateRequest,
 } from "../features/Type/Interfaces";
 import { useCreatePartnerMutation } from "../features/Api/partnersApi";
 import { useUpdatePartnerMutation } from "../features/Api/partnersApi";
 import { useDeletePartnerMutation } from "../features/Api/partnersApi";
+import { handleError } from "./useHandleError";
 
 export const usePartners = () => {
-  const { data, isLoading, error } = useGetAllPartnersQuery();
+  const { data, isLoading, error } = useGetAllPartnersQuery({pageNumber:1,pageSize:10});
   const [addPartner, { isLoading: isAddingPartner }] =
     useCreatePartnerMutation();
   const [updatePartnerMutation, { isLoading: isUpdatingPartner }] =
     useUpdatePartnerMutation();
   const [deletePartnerMutation, { isLoading: isDeletingPartner }] =
     useDeletePartnerMutation();
-  const handleError = (error: any) => {
-    console.table(error);
-    toast.error(
-      `${
-        (error as { data?: { message?: string } }).data?.message ||
-        "Failed to create partner"
-      }`
-    );
-  };
   const createPartner = async (partner: IPartnersCreateRequest) => {
     if (
       !partner.name ||
@@ -45,8 +31,8 @@ export const usePartners = () => {
     try {
       await addPartner(partner).unwrap();
       toast.success("Partner created successfully");
-    } catch (error) {
-      handleError(error);
+    } catch (error: unknown) {
+      handleError(error as { data?: { message?: string } });
     }
   };
   const updatePartner = async (partner: IPartnerDto, id: string) => {
@@ -56,7 +42,7 @@ export const usePartners = () => {
       return response;
     } catch (error) {
       console.table(error);
-      handleError(error);
+      handleError(error as { data?: { message?: string } });
     }
   };
   const deletePartner = async (id: string) => {
@@ -66,7 +52,7 @@ export const usePartners = () => {
       return response;
     } catch (error) {
       console.table(error);
-      handleError(error);
+      handleError(error as { data?: { message?: string } });
     }
   };
 

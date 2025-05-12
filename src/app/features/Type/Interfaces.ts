@@ -241,6 +241,7 @@ export interface IFAQ {
   answer: string;
   companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d";
 }
+
 export interface IFAQUpdateRequest {
   id: string;
   question: string;

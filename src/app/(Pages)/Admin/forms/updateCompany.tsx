@@ -4,7 +4,6 @@ import { setUCompany } from "@/app/features/appSlice/companySlices";
 import { RootState } from "@/app/features/Store";
 import {
   ICompanyRequest,
-  ICompanyResponse,
 } from "@/app/features/Type/Interfaces";
 import useCompany from "@/app/hooks/useCompany";
 import { useFile } from "@/app/hooks/useFile";

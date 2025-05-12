@@ -38,15 +38,15 @@ export const projectsApi = createApi({
     }),
     GetAllProjects: builder.query<
       PageResponse<IProject>,
-      { PageNumber: number; PageSize: number }
+      { pageNumber: number; pageSize: number }
     >({
-      query: ({ PageSize, PageNumber }) => ({
+      query: ({ pageSize, pageNumber }) => ({
         url: GetAll,
         method: "GET",
         params: {
           companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
-          PageSize,
-          PageNumber,
+          pageSize: pageSize,
+          pageNumber: pageNumber,
         },
       }),
     }),

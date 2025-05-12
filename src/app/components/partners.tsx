@@ -1,14 +1,18 @@
 import { motion } from "framer-motion";
-import  { IPartnerRequest } from "../features/Type/Interfaces";
+import { IPartner } from "../features/Type/Interfaces";
 import { PageResponse } from "../features/Type/Interfaces";
 import { useGetAllPartnersQuery } from "../features/Api/partnersApi";
 import PartnerCard from "./partnercard";
-import { FaLink } from "react-icons/fa";
+import Marquee from "react-fast-marquee";
+
 
 export default function Partners() {
   const { data: partnersData, isLoading, error } = useGetAllPartnersQuery({ pageNumber: 1, pageSize: 10 });
-  const partners = (partnersData as PageResponse<IPartnerRequest>)?.data ?? [];
+  const partners = (partnersData as PageResponse<IPartner>)?.data ?? [];
+  
 
+
+  
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
@@ -26,30 +30,49 @@ export default function Partners() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.6 }}
-      className="space-y-12"
-    >
-      <h2 className="text-3xl font-bold text-white text-center">عملاؤنا</h2>
-
-      <div className="w-full pb-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center w-full max-w-7xl mx-auto">
-          {partners.map((partner) => (
-            <PartnerCard
-              key={partner.id}
-              id={partner.id}
-              link={partner.website}
-              website={partner.website}
-              name={partner.name}
-              logo={partner.logo}
-            >
-              <FaLink className="w-4 h-4" />
-            </PartnerCard>
-          ))}
+    <section className="py-16 md:py-24 w-full" id="partners">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+        className="container mx-auto px-4"
+        dir="rtl"
+      >
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6"
+          >
+            عملاؤنا
+          </motion.h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            نفتخر بشراكتنا مع مجموعة من أبرز الشركات والمؤسسات
+          </p>
         </div>
-      </div>
-    </motion.div>
+
+        <div className="relative">
+          <Marquee speed={50}
+          gradient={false}
+          pauseOnHover={true}
+          pauseOnClick={true}
+          delay={0}
+          play={true}
+          direction="right"
+          >
+            {partners.map((partner) => (
+              <div key={partner.id}>
+                <PartnerCard link={partner.website} website={partner.website} name={partner.name} logo={partner.logo}  id={partner.id} >
+                  <></>
+                  </PartnerCard >
+              </div>
+            ))}
+          </Marquee>
+         </div>
+      </motion.div>
+    </section>
   );
 }

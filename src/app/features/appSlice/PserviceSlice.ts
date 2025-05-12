@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  IPartnerDto,
-  IPServiceDto,
   IPserviceResponse,
 } from "../Type/Interfaces";
 

@@ -1,4 +1,4 @@
-import { IEmployee, IFAQ, IFAQUpdateRequest } from "./Interfaces";
+import { IEmployee,    IFAQUpdateRequest } from "./Interfaces";
 
 export interface IButtonProps {
   onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;

@@ -3,47 +3,20 @@ import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
-import { useGetAllPartnersQuery } from "@/app/features/Api/partnersApi";
-import { IPartnerDto, IService, IServiceDto, PageResponse } from "@/app/features/Type/Interfaces";
 import { BaseUrl } from "@/app/features/Type/BaseUrl";
 import { useGetCompanyQuery } from "@/app/features/Api/CompanyApi";
-import ServicesCard from "../Admin/ui/ServicesCard";
-import { useGetAllServicesQuery } from "@/app/features/Api/ServicesApi";
 import Services from "@/app/components/Services";
-
+import Partners from "@/app/components/partners";
+import { useRouter } from "next/navigation";
+import { useGetEmployeesQuery } from "@/app/features/Api/EmployeeApi";
 export default function About() {
   const { data: companyData } = useGetCompanyQuery();
-  const { data: partnersData } = useGetAllPartnersQuery({
-    pageNumber: 1,
-    pageSize: 10,
-  });
-  const partners = (partnersData as PageResponse<IPartnerDto>)?.data ?? [];
+  const router = useRouter();
   const about = useMemo(() => companyData?.about, [companyData]);
   const aboutImage = useMemo(() => companyData?.aboutImage, [companyData]);
-
-  const workers = [
-    {
-      name: "كرار",
-      role: "مدير الشركة",
-      image: "/images/team1.jpg",
-    },
-    {
-      name: "كرار",
-      role: "مدير الشركة",
-      image: "/images/team1.jpg",
-    },
-    {
-      name: "كرار",
-      role: "مدير الشركة",
-      image: "/images/team1.jpg",
-    },
-    {
-      name: "كرار",
-      role: "مدير الشركة",
-      image: "/images/team1.jpg",
-    },
-  ];  
- 
+  const { data: employees } = useGetEmployeesQuery({ pageNumber: 1, pageSize: 10 });
+  const workers = useMemo(() => employees?.data, [employees]);
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-[#374151]">
       <div className="container mx-auto px-4 py-24 space-y-32">
@@ -79,6 +52,7 @@ export default function About() {
               <PrimaryButton
                 content="تواصل معنا"
                 className="bg-DarkPrimary text-white hover:opacity-90 transition-all"
+                onClick={() => router.push("/contact")}
               />
             </div>
           </div>
@@ -94,7 +68,7 @@ export default function About() {
             فريق العمل
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {workers.map((worker, index) => (
+            {workers?.map((worker, index) => (
               <motion.div
                 key={index}
                 whileHover={{ scale: 1.05 }}
@@ -102,7 +76,7 @@ export default function About() {
               >
                 <div className="relative h-64">
                   <Image
-                    src={worker.image}
+                    src={`${BaseUrl}${worker.employeeImage}`}
                     alt={worker.name}
                     fill
                     className="object-cover"
@@ -113,7 +87,7 @@ export default function About() {
                     {worker.name}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    {worker.role}
+                    {worker.employeeRole}
                   </p>
                 </div>
               </motion.div>
@@ -127,31 +101,8 @@ export default function About() {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="space-y-12"
         >
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center">
-            عملاؤنا
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {partners.map((partner: IPartnerDto, index: number) => (
-              <motion.div
-                key={index}
-                whileHover={{ scale: 1.02 }}
-                className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                <div className="relative h-48 mb-6">
-                  <Image
-                    src={`${BaseUrl}${partner.logo}`}
-                    alt={partner.name}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                  {partner.name}
-                </h3>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+          <Partners />
+          </motion.div>
       </div>
     </div>
   );

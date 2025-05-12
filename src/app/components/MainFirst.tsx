@@ -1,33 +1,34 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PrimaryButton from "./EleComponents/PrimaryButton";
 import SecondaryButton from "./EleComponents/SecondaryButton";
-import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "../features/Store";
 import { Link } from "react-scroll";
 import { useGetCompanyQuery } from "../features/Api/CompanyApi";
 import { BaseUrl } from "../features/Type/BaseUrl";
 import ImageWithLoader from "./ImageWithLoader";
-
 export default function MainFirst() {
+  
   const company = useSelector((state: RootState) => state.company.UCompany);
   const { data: companyData, isLoading } = useGetCompanyQuery();
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [index, setIndex] = useState(0);
 
+  const words = useMemo(() => companyData?.words ?? [], [companyData]);
+  const currentImage = useMemo(() => words[index], [words, index]);
+  const backgroundImage = useMemo(() => `${BaseUrl}${currentImage}`, [currentImage]);
+  console.log("backgroundImage",backgroundImage);
   useEffect(() => {
-    if (!companyData?.words?.length) return;
+    if (!words.length) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % companyData.words.length);
-    }, 1500);
+      setIndex((prevIndex) => (prevIndex + 1) % words.length);
+    }, 2000);
 
     return () => clearInterval(interval);
-  }, [companyData]);
-
-  const currentImage = companyData?.words?.[currentIndex];
+  }, [words]);
 
   if (isLoading) {
     return (
@@ -62,77 +63,45 @@ export default function MainFirst() {
             transition={{ duration: 0.8 }}
             className="md:w-1/2"
           >
-             <div className="w-128 h-128">
-      <div
-        className="w-full h-full bg-cover bg-center"
-        style={{
-          backgroundImage: `url('${ BaseUrl}/${currentImage}')`,
-          WebkitMaskImage: "url('/images/logo.png')",
-          maskImage: "url('/images/logo.png')",
-          WebkitMaskRepeat: "no-repeat",
-          maskRepeat: "no-repeat",
-          WebkitMaskSize: "cover",
-          maskSize: "cover",
-        }}
-      />
-    </div>
-            {/* <div className="relative w-full aspect-square max-w-[500px] mx-auto overflow-hidden">
-              <AnimatePresence initial={false} mode="sync">
-                {currentImage && (
-                  <motion.div
-                    key={currentImage}
-                    initial={{
-                      opacity: 0,
-                      filter: "blur(10px)",
-                      scale: 1.2,
-                      position: "absolute",
-                      width: "100%",
-                      height: "100%",
-                    }}
-                    animate={{
-                      opacity: 1,
-                      filter: "blur(0px)",
-                      scale: 1,
-                      position: "absolute",
-                      width: "100%",
-                      height: "100%",
-                    }}
-                    exit={{
-                      opacity: 0,
-                      filter: "blur(10px)",
-                      scale: 1.2,
-                      position: "absolute",
-                      width: "100%",
-                      height: "100%",
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 100,
-                      damping: 20,
-                      duration: 0.5,
-                    }}
-                    className="absolute inset-0 w-full h-full"
-                  >
-                    <Image
-                      src={`${BaseUrl}/${currentImage}`}
-                      width={600}
-                      height={600}
-                      alt="logo"
-                      className="w-full h-full object-cover"
+             <div className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] relative -mt-16 sm:-mt-20 md:-mt-24 lg:-mt-32">
+              {backgroundImage!=BaseUrl+"undefined" ? (
+              <svg width="100%" height="100%" viewBox="0 0 500 500" className="absolute inset-0 w-full h-full">
+                <defs>
+                  <mask id="logo-mask">
+                    <image
+                      href="/images/iconWhite.png"
+                      width="100%"
+                      height="100%"
+                      preserveAspectRatio="xMidYMid slice"
                     />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              <div className="absolute inset-0 w-full h-full">
-                <ImageWithLoader
-                  src={`/images/iconT.png`}
-                  width={600}
-                  height={600}
-                  alt="logo"
-                  className="w-full h-full "
-                />
-              </div>
-            </div> */}
+                  </mask>
+                </defs>
+                <AnimatePresence mode="sync">
+                
+                  <motion.image
+                    href={backgroundImage}
+                    width="100%"
+                    height="100%"
+                    preserveAspectRatio="xMidYMid slice"
+                    mask="url(#logo-mask)"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ 
+                      duration: 0.8,
+                      ease: "easeInOut"
+                    }}
+                    key={backgroundImage}
+                    style={{ position: 'absolute', top: 0, left: 0 }}
+                  />
+                </AnimatePresence>
+              </svg>
+              ) : (
+                <div className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] relative -mt-16 sm:-mt-20 md:-mt-24 lg:-mt-32">
+                  <ImageWithLoader src="/images/iconBlue.png" alt="Logo" className="object-cover" />
+                </div>
+              )}
+            </div>
           </motion.div>
 
           <motion.div
@@ -153,7 +122,7 @@ export default function MainFirst() {
 
             <div className="flex justify-start md:justify-end items-center space-x-5 pt-6">
               <Link
-                to="projects"
+                to="services"
                 smooth={true}
                 duration={320}
                 style={{ margin: "0 10px", cursor: "pointer" }}

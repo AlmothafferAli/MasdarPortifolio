@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import PrimaryButton from "./EleComponents/PrimaryButton";
 import { useRouter } from "next/navigation";
+import { BaseUrl } from "../features/Type/BaseUrl";
 
 export default function PartnerCard({
   link,
@@ -34,12 +35,12 @@ export default function PartnerCard({
         {/* Image Section */}
         {logo && (
           <div className="relative  h-48 mb-4 rounded-xl overflow-hidden">
-            <Image
-              src={"http://192.168.77.191:8081/" + logo}
-              alt={name || "Partner logo"}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-            />
+              <Image
+                src={`${BaseUrl}/${logo}` || ""}
+                alt={name || "Partner logo"}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+              />
           </div>
         )}
 

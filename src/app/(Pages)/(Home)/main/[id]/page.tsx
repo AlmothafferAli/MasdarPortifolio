@@ -2,21 +2,15 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useGetAllPartnersQuery } from "../../../../features/Api/partnersApi";
-import { IPartnerRequest } from "../../../../features/Type/Interfaces";
-import { PageResponse } from "../../../../features/Type/Interfaces";
+import { useGetPartnerByIdQuery } from "../../../../features/Api/partnersApi";
 import { useParams } from "next/navigation";
-import { useGetPServicesQuery } from "../../../../features/Api/PServiceApi";
+import { useGetAllPServicesQuery } from "../../../../features/Api/PServiceApi";
 
 export default function PartnerPage() {
   const { id } = useParams();
-  const { data: partnerData } = useGetAllPartnersQuery({
-    pageNumber: 1,
-    pageSize: 10,
-  });
-  const partner = (partnerData as PageResponse<IPartnerRequest>)?.data ?? [];
-  const partnerDetails = partner.find((p) => p.id === id);
-  const { data: services } = useGetPServicesQuery(partnerDetails?.id!);
+  const { data: partnerData } = useGetPartnerByIdQuery(id as string);
+  const partner = partnerData;
+  const { data: services } = useGetAllPServicesQuery(id as string);
 
   return (
     <div
@@ -38,8 +32,8 @@ export default function PartnerPage() {
         <div className="flex flex-col md:flex-row gap-6 md:gap-8">
           <div className="w-full md:w-1/4 aspect-square">
             <Image
-              src={"http://192.168.77.191:8081/" + partnerDetails?.logo}
-              alt={partnerDetails?.name || "partner logo"}
+              src={"http://192.168.77.191:8081/" + partner?.logo}
+              alt={partner?.name || "partner logo"}
               width={500}
               height={500}
               className="w-full h-full object-cover rounded-2xl"
@@ -47,12 +41,10 @@ export default function PartnerPage() {
           </div>
           <div className="flex flex-col gap-4 flex-1">
             <h1 className="text-3xl md:text-4xl font-bold dark:text-[#fdfdfd]">
-              {partnerDetails?.name}
+              {partner?.name}
             </h1>
             <p className="text-lg md:text-xl text-gray-500 dark:text-[#dfdfdf]">
-              مجمع سكني يقدم خدمات متكاملة للشركات والمؤسسات. نعمل على تطوير
-              وتنفيذ حلول مبتكرة تساعد عملائنا على النمو والتطور في السوق الرقمي
-              .
+              {partner?.introduction}
             </p>
           </div>
         </div>

@@ -16,7 +16,6 @@ import { EmployeeApi } from "./Api/EmployeeApi";
 import employeeReducer from "./appSlice/EmployeeSlice";
 import { PServiceApi } from "./Api/PServiceApi";
 import pserviceReducer from "./appSlice/PserviceSlice";
-import { pserviceSlice } from "./appSlice/PserviceSlice";
 import { FAQApi } from "./Api/FAQApi";
 import faqReducer from "./appSlice/FAQSlice";
 const rootReducer = combineReducers({

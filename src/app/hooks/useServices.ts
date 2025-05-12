@@ -17,7 +17,10 @@ export default function useServices() {
   const [addService] = useAddServiceMutation();
   const [deleteServiceMutation] = useDeleteServiceMutation();
   const [updateServiceMutation] = useUpdateServiceMutation();
-  const { data, isLoading, error } = useGetAllServicesQuery();
+  const { data, isLoading, error } = useGetAllServicesQuery({
+    pageNumber: 1,
+    pageSize: 10,
+  });
 
   const createService = async (service: IServiceRequest) => {
     try {

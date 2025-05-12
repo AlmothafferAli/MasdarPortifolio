@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IEmployeeDto, IFAQ } from "../Type/Interfaces";
+import { IFAQ } from "../Type/Interfaces";
 
 interface FAQState {
   selectedFAQId: string;

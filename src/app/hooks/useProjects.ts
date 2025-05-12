@@ -19,7 +19,7 @@ export const useProjects = () => {
     data: projects,
     isLoading: isFetchingProjects,
     error: fetchProjectsError,
-  } = useGetAllProjectsQuery({ PageNumber: 1, PageSize: 10 });
+  } = useGetAllProjectsQuery({ pageNumber: 1, pageSize: 10 });
   const [deleteProjectMutation] = useDeleteProjectMutation();
   const dispatch = useDispatch();
 

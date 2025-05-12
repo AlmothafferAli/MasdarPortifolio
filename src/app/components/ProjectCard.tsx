@@ -9,7 +9,6 @@ export default function ProjectCard({
   description,
   image,
   buttonName,
-  className,
   buttonClassName,
   color,
 }: IProjectCardProps) {
@@ -53,7 +52,7 @@ export default function ProjectCard({
           <div className="flex items-center justify-between mt-auto">
             <PrimaryButton
               content={buttonName}
-              className={`text-sm sm:text-base text-blue-600 dark:text-blue-400 font-semibold hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-300 transform hover:translate-x-1 ${
+              className={`text-sm sm:text-base text-DarkPrimary dark:text-blue-400 font-semibold hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-300 transform hover:translate-x-1 ${
                 buttonClassName ?? ""
               }`}
             />

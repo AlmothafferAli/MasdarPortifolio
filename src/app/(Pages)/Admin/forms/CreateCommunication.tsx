@@ -2,10 +2,7 @@
 import { useState, ChangeEvent } from "react";
 import PrimaryInput from "@/app/components/EleComponents/PrimaryInput";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
-import { useFile } from "@/app/hooks/useFile";
-import { toast } from "react-toastify";
-import { useEmployee } from "@/app/hooks/useEmployee";
-import { IEmployeeDto, IFAQ, IFAQDto } from "@/app/features/Type/Interfaces";
+import { IFAQ } from "@/app/features/Type/Interfaces";
 import { useFAQ } from "@/app/hooks/useFAQ";
 
 export default function CreateFAQ({
@@ -13,13 +10,12 @@ export default function CreateFAQ({
 }: {
   setIsAddFAQ: (isAddFAQ: boolean) => void;
 }) {
-  const { handleUpload } = useFile();
   const [faq, setFaq] = useState<IFAQ>({
     question: "",
     answer: "",
     companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
   });
-  const { createFAQ, isAddingFAQ, deleteFAQ } = useFAQ();
+  const { createFAQ, isAddingFAQ} = useFAQ();
 
   const handleCreateFAQ = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

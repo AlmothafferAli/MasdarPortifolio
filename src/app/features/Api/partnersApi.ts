@@ -30,13 +30,15 @@ export const partnersApi = createApi({
   }),
   endpoints: (builder) => ({
     getAllPartners: builder.query<
-      IPartnerDto,
-      "08dd88e3-7289-4462-88d6-16d91e81fa0d"
+      PageResponse<IPartnerDto>,
+      { pageNumber: number, pageSize: number }
     >({
-      query: () => ({
+      query: ({ pageNumber, pageSize }) => ({
           url: GetAll,
         params: {
           companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+          pageNumber: pageNumber,
+          pageSize: pageSize,
         },
       }),
     }),
@@ -50,17 +52,6 @@ export const partnersApi = createApi({
         },
       }),
     }),
-    GetAllPartners: builder.query<PageResponse<IPartnerDto>, { pageNumber: number, pageSize: number }>({
-      query: ({ pageNumber, pageSize }) => ({
-        url: GetAll,
-        method: "GET",
-        params: {
-          companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
-          pageNumber: pageNumber,
-          pageSize: pageSize,
-        },
-      }),
-    }),
     deletePartner: builder.mutation<IPartnerResponse, string>({
       query: (id) => ({
         url: Delete + "/" + id,
@@ -68,6 +59,12 @@ export const partnersApi = createApi({
         params: {
           companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
         },
+      }),
+    }),
+    getPartnerById: builder.query<IPartnerResponse, string>({
+      query: (id) => ({
+        url:"Get/" + id,
+        method: "GET",
       }),
     }),
     updatePartner: builder.mutation<
@@ -88,4 +85,5 @@ export const {
   useCreatePartnerMutation,
   useDeletePartnerMutation,
   useUpdatePartnerMutation,
+  useGetPartnerByIdQuery,
 } = partnersApi;

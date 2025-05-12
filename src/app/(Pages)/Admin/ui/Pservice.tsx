@@ -6,13 +6,11 @@ import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedPartnerId } from "@/app/features/appSlice/partnerSlice";
 import { motion } from "framer-motion";
-import { usePservice } from "@/app/hooks/usePservice";
-import { useGetPServicesQuery } from "@/app/features/Api/PServiceApi";
+import { useGetAllPServicesQuery } from "@/app/features/Api/PServiceApi";
 import { RootState } from "@/app/features/Store";
 import CreatePservice from "../forms/CreatePservice";
 import { BaseUrl } from "@/app/features/Type/BaseUrl";
 import {
-  setEditedPservice,
   setIsEditingPservice,
   setSelectedPservice,
   setSelectedPserviceId,
@@ -33,16 +31,20 @@ const PService = () => {
   const selectedPservice = useSelector(
     (state: RootState) => state.pservice.selectedPservice
   );
-  if (!selectedPartnerId) return null;
-  const { data, isLoading, error } = useGetPServicesQuery(selectedPartnerId!, {
+  
+  const { data } = useGetAllPServicesQuery(selectedPartnerId!, {
     skip: !selectedPartnerId,
   });
+
+  if (!selectedPartnerId) return null;
 
   return (
     <div
       className="fixed inset-0 flex justify-end bg-black/50 backdrop-blur-sm z-50"
       onClick={() => {
-        !isEditingPservice && dispatch(setSelectedPartnerId(""));
+        if (!isEditingPservice) {
+          dispatch(setSelectedPartnerId(""));
+        }
       }}
     >
       <div

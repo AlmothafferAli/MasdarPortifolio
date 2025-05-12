@@ -3,10 +3,7 @@ import PrimaryInput from "@/app/components/EleComponents/PrimaryInput";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 import { useFile } from "@/app/hooks/useFile";
 import { toast } from "react-toastify";
-import { usePartners } from "@/app/hooks/usePartners";
 import {
-  IPartnersCreateRequest,
-  IPService,
   IPServiceDto,
 } from "@/app/features/Type/Interfaces";
 import { usePservice } from "@/app/hooks/usePservice";

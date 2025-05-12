@@ -1,10 +1,9 @@
 "use client";
-import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 
 import { PageResponse, IPartnerRequest } from "@/app/features/Type/Interfaces";
+import { skipToken } from "@reduxjs/toolkit/query/react";
 
 import React, { useState, useMemo, useEffect } from "react";
-import { FaCog, FaProjectDiagram, FaServer, FaUsers } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 
 import UpdateCompany from "./forms/updateCompany";
@@ -28,7 +27,6 @@ import { setDeletedProjectId } from "@/app/features/appSlice/projectSlice";
 import Image from "next/image";
 import CreateEmployee from "./forms/createEmployee";
 import UpdateAbout from "./ui/updateAbout";
-import { BaseUrl } from "@/app/features/Type/BaseUrl";
 import EmployeeCards from "./ui/EmployeeCards";
 import { useGetEmployeesQuery } from "@/app/features/Api/EmployeeApi";
 import Sidebar from "./ui/Sidebar";
@@ -36,13 +34,14 @@ import Header from "./ui/Header";
 import CreateFAQ from "./forms/CreateCommunication";
 import FAQCards from "./ui/fetchFAQ";
 import { useGetAllFAQsQuery } from "@/app/features/Api/FAQApi";
+import AboutSection from "./ui/AboutSection";
+import LoadingSpinner from "./ui/LoadingSpinner";
 
 export default function AdminPage() {
   const [activeItem, setActiveItem] = useState<string>("setup");
   const [isEditAbout, setIsEditAbout] = useState(false);
   const [text, setText] = useState("اعداد الرئيسية");
   const [buttonText, setButtonText] = useState("تعديل الرئيسية");
-  const [Function,setFunction] = useState<void>();
   const [isAddProject, setIsAddProject] = useState(false);
   const [isAddService, setIsAddService] = useState(false);
   const [isAddPartner, setIsAddPartner] = useState(false);
@@ -52,17 +51,37 @@ export default function AdminPage() {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
 
-  const { data: employeesData } = useGetEmployeesQuery();
-  const { data: projectsData } = useGetAllProjectsQuery({
-    PageNumber: page,
-    PageSize: 10,
-  });
-  const { data: servicesData } = useGetAllServicesQuery();
-  const { data: partnersData } = useGetAllPartnersQuery({
-    pageNumber: page,
-    pageSize: 10,
-  });
-  const { data: faqsData } = useGetAllFAQsQuery({ pageSize: 10, pageNumber: 1 });
+  const { data: employeesData, isLoading: isLoadingEmployees } = useGetEmployeesQuery(
+    activeItem === "employees" ? {
+      pageNumber: page,
+      pageSize: 10,
+    } : skipToken
+  );
+  const { data: projectsData, isLoading: isLoadingProjects } = useGetAllProjectsQuery(
+    activeItem === "projects" ? {
+      pageNumber: page,
+      pageSize: 10,
+    } : skipToken
+  );
+  const { data: servicesData, isLoading: isLoadingServices } = useGetAllServicesQuery(
+    activeItem === "services" ? {
+      pageNumber: page,
+      pageSize: 10,
+    } : skipToken
+  );
+  const { data: partnersData, isLoading: isLoadingPartners } = useGetAllPartnersQuery(
+    activeItem === "partners" ? {
+      pageNumber: page,
+      pageSize: 10,
+    } : skipToken
+  );
+  
+  const { data: faqsData, isLoading: isLoadingFAQs } = useGetAllFAQsQuery(
+    activeItem === "communication" ? {
+      pageSize: 10,
+      pageNumber: page
+    } : skipToken
+  );
   
   const employees = useMemo(() => employeesData?.data ?? [], [employeesData]);
   const projects = useMemo(() => projectsData?.data ?? [], [projectsData]);
@@ -73,7 +92,7 @@ export default function AdminPage() {
   );
   const faqs = useMemo(() => faqsData?.data ?? [], [faqsData]);
   const company = useSelector((state: RootState) => state.company.company);
-
+  
   const handleButtonClick = () => {
     switch (activeItem) {
       case "setup":
@@ -105,34 +124,42 @@ export default function AdminPage() {
       case "setup":
         setText("اعداد الرئيسية");
         setButtonText("تعديل الرئيسية");
+        setPage(1);
         break;
       case "about":
         setText("لمحة عن الشركة");
         setButtonText("تعديل عن الشركة");
+        setPage(1);
         break;
       case "projects":
         setText("المشاريع");
         setButtonText("إضافة مشروع جديد");
+        setPage(1);
         break;
       case "employees":
         setText("الموظفين");
         setButtonText("إضافة موظف جديد");
+        setPage(1);
         break;
       case "services":
         setText("الخدمات");
         setButtonText("إضافة خدمة جديدة");
+        setPage(1);
         break;
       case "partners":
         setText("الشركاء");
         setButtonText("إضافة شريك جديد");
+        setPage(1);
         break;
       case "communication":
         setText("اعداد التواصل");
         setButtonText("تعديل التواصل");
+        setPage(1);
         break;
       default:
         setText("اعداد الرئيسية");
         setButtonText("تعديل الرئيسية");
+        setPage(1);
     }
   }, [activeItem]);
 
@@ -154,164 +181,178 @@ export default function AdminPage() {
             {/* Content will be rendered here based on activeItem */}
             {activeItem === "projects" && (
               <div className="flex flex-col justify-between h-full">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 overflow-y-auto pb-8 mt-4 md:mt-6">
-                  {projects.map((project) => (
-                    <ProjectAdminCard
-                      key={project.id}
-                      id={project.id}
-                      title={project.name}
-                      description={project.description}
-                      image={project.image}
-                      buttonName="عرض التفاصيل"
-                      onDelete={() => {
-                        dispatch(setDeletedProjectId(project.id));
-                      }}
-                    >
-                      <Image
-                        className="w-6 h-6 rounded-full"
-                        src={"http://192.168.77.191:8081/" + project.logo}
-                        alt="logo"
-                        width={24}
-                        height={24}
-                      />
-                    </ProjectAdminCard>
-                  ))}
-                </div>
-                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
-                  <button
-                    onClick={() => page > 1 && setPage(page - 1)}
-                    className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
-                  >
-                    السابق
-                  </button>
-                  <button
-                    onClick={() => !projectsData?.isLast && setPage(page + 1)}
-                    className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
-                  >
-                    التالي
-                  </button>
-                </div>
+                {isLoadingProjects ? (
+                  <LoadingSpinner />
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 overflow-y-auto pb-8 mt-4 md:mt-6">
+                      {projects.map((project) => (
+                        <ProjectAdminCard
+                          key={project.id}
+                          id={project.id}
+                          title={project.name}
+                          description={project.description}
+                          image={project.image}
+                          buttonName="عرض التفاصيل"
+                          onDelete={() => {
+                            dispatch(setDeletedProjectId(project.id));
+                          }}
+                        >
+                          <Image
+                            className="w-6 h-6 rounded-full"
+                            src={"http://192.168.77.191:8081/" + project.logo}
+                            alt="logo"
+                            width={24}
+                            height={24}
+                          />
+                        </ProjectAdminCard>
+                      ))}
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
+                      <button
+                        onClick={() => page > 1 && setPage(page - 1)}
+                        className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
+                      >
+                        السابق
+                      </button>
+                      <button
+                        onClick={() => !projectsData?.isLast && setPage(page + 1)}
+                        className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
+                      >
+                        التالي
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             )}
             {activeItem === "about" && (
-              <div className="flex flex-col gap-8 mt-6">
-                <div className="bg-white p-8 rounded-2xl shadow-md">
-                  <h2 className="text-4xl font-bold text-gray-800 mb-6">
-                    لمحة عن الشركة
-                  </h2>
-                  <p className="text-2xl text-gray-700 leading-relaxed">
-                    {company.about}
-                  </p>
-                </div>
-                <div className="bg-white p-8 rounded-2xl shadow-md flex justify-center">
-                  <Image
-                    src={`${BaseUrl}${company.aboutImage}`}
-                    alt="about"
-                    width={400}
-                    height={300}
-                    className="rounded-2xl shadow-lg"
-                  />
-                </div>
-              </div>
+              <AboutSection about={company.about} aboutImage={company.aboutImage} />
             )}
             {activeItem === "partners" && (
               <div className="flex flex-col justify-between h-full">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 overflow-y-auto max-h-[62vh] pb-8 mt-4 md:mt-6">
-                  {partners.map((partner: IPartnerRequest) => (
-                    <PartnerAdmin
-                      key={partner.id}
-                      id={partner.id}
-                      name={partner.name}
-                      logo={partner.logo}
-                      website={partner.website}
-                      introduction={partner.introduction}
-                      buttonName="عرض التفاصيل"
-                    />
-                  ))}
-                </div>
-                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
-                  <button
-                    onClick={() => page > 1 && setPage(page - 1)}
-                    className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
-                  >
-                    السابق
-                  </button>
-                  <button className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base">
-                    التالي
-                  </button>
-                </div>
+                {isLoadingPartners ? (
+                  <LoadingSpinner />
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 overflow-y-auto max-h-[62vh] pb-8 mt-4 md:mt-6">
+                      {partners.map((partner: IPartnerRequest) => (
+                        <PartnerAdmin
+                          key={partner.id}
+                          id={partner.id}
+                          name={partner.name}
+                          logo={partner.logo}
+                          website={partner.website}
+                          introduction={partner.introduction}
+                          buttonName="عرض التفاصيل"
+                        />
+                      ))}
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
+                      <button
+                        onClick={() => page > 1 && setPage(page - 1)}
+                        className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
+                      >
+                        السابق
+                      </button>
+                      <button className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
+                        onClick={() => !partnersData?.isLast && setPage(page + 1)}
+                      >
+                        التالي
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             )}
             {activeItem === "communication" && (
               <div className="flex flex-col justify-between h-full">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 overflow-y-auto max-h-[62vh] pb-8 mt-4 md:mt-6">
-                  {faqs.map((faq) => (
-                    <FAQCards key={faq.id} faq={faq} />
-                  ))}
-                </div>
+                {isLoadingFAQs ? (
+                  <LoadingSpinner />
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 overflow-y-auto max-h-[62vh] pb-8 mt-4 md:mt-6">
+                      {faqs.map((faq) => (
+                        <FAQCards key={faq.id} faq={faq} />
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             )}
             {activeItem === "employees" && (
               <div className="flex flex-col justify-between h-full">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 overflow-y-auto max-h-[62vh] pb-8 mt-4 md:mt-6">
-                  {employees.map((employee) => (
-                    <EmployeeCards
-                      key={employee.id}
-                      employee={employee}
-                      buttonName="عرض التفاصيل"
-                    />
-                  ))}
-                </div>
-                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
-                  <button
-                    onClick={() => page > 1 && setPage(page - 1)}
-                    className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
-                  >
-                    السابق
-                  </button>
-                  <button
-                    onClick={() => !employeesData?.isLast && setPage(page + 1)}
-                    className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
-                  >
-                    التالي
-                  </button>
-                </div>
+                {isLoadingEmployees ? (
+                  <LoadingSpinner />
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 overflow-y-auto max-h-[62vh] pb-8 mt-4 md:mt-6">
+                      {employees.map((employee) => (
+                        <EmployeeCards
+                          key={employee.id}
+                          employee={employee}
+                          buttonName="عرض التفاصيل"
+                        />
+                      ))}
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
+                      <button
+                        onClick={() => page > 1 && setPage(page - 1)}
+                        className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
+                      >
+                        السابق
+                      </button>
+                      <button
+                        onClick={() => !employeesData?.isLast && setPage(page + 1)}
+                        className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
+                      >
+                        التالي
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             )}
 
             {activeItem === "services" && (
               <div className="flex flex-col justify-between h-full" dir="rtl">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8 mt-4 md:mt-6 px-2 md:px-8 overflow-y-auto max-h-[62vh] pb-8">
-                  {services.map((service) => (
-                    <ServiceAdmin
-                      key={service.id}
-                      id={service.id}
-                      title={service.name}
-                      description={service.description}
-                      image={service.image}
-                      buttonName="عرض التفاصيل"
-                      link={service.link}
-                      benefits={service.benefits}
-                      features={service.features}
-                      price={service.price}
-                      summary={service.summary}
-                    />
-                  ))}
-                </div>
-                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
-                  <button
-                    onClick={() => page > 1 && setPage(page - 1)}
-                    className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
-                  >
-                    السابق
-                  </button>
-                  <button
-                    onClick={() => !servicesData?.isLast && setPage(page + 1)}
-                    className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
-                  >
-                    التالي
-                  </button>
-                </div>
+                {isLoadingServices ? (
+                  <LoadingSpinner />
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8 mt-4 md:mt-6 px-2 md:px-8 overflow-y-auto max-h-[62vh] pb-8">
+                      {services.map((service) => (
+                        <ServiceAdmin
+                          key={service.id}
+                          id={service.id}
+                          title={service.name}
+                          description={service.description}
+                          image={service.image}
+                          buttonName="عرض التفاصيل"
+                          link={service.link}
+                          benefits={service.benefits}
+                          features={service.features}
+                          price={service.price}
+                          summary={service.summary}
+                        />
+                      ))}
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
+                      <button
+                        onClick={() => page > 1 && setPage(page - 1)}
+                        className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
+                      >
+                        السابق
+                      </button>
+                      <button
+                        onClick={() => !servicesData?.isLast && setPage(page + 1)}
+                        className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
+                      >
+                        التالي
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>

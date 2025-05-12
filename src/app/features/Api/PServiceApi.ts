@@ -1,7 +1,6 @@
 import { ApiUrl, BaseUrl, PServiceUrl } from "../Type/BaseUrl";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
-  IEmployeeDto,
   IEmployee,
   IPService,
   IPServiceDto,
@@ -23,7 +22,7 @@ export const PServiceApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getPServices: builder.query<PageResponse<IPService>, string>({
+    getAllPServices: builder.query<PageResponse<IPService>, string>({
       query: (partnerId) => ({
         url: GetAll,
         method: "GET",
@@ -59,7 +58,7 @@ export const PServiceApi = createApi({
 });
 
 export const {
-  useGetPServicesQuery,
+  useGetAllPServicesQuery,
   useAddPserviceMutation,
   useDeletePserviceMutation,
   useUpdatePserviceMutation,

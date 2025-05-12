@@ -1,15 +1,11 @@
 import { ChangeEvent, useState } from "react";
-import { IEmployeeDto, IPartnerDto } from "@/app/features/Type/Interfaces";
+import { IEmployeeDto } from "@/app/features/Type/Interfaces";
 import PrimaryInput from "@/app/components/EleComponents/PrimaryInput";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
-import { toast } from "react-toastify";
 
-import { usePartners } from "@/app/hooks/usePartners";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/features/Store";
 
-import { useUpdatePartnerMutation } from "@/app/features/Api/partnersApi";
-import { setSelectedPartnerId } from "@/app/features/appSlice/partnerSlice";
 import { useDispatch } from "react-redux";
 import { useEmployee } from "@/app/hooks/useEmployee";
 import { useFile } from "@/app/hooks/useFile";

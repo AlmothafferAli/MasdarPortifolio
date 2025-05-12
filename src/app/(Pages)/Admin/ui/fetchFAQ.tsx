@@ -1,19 +1,11 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
-import { IEmployeeCardsProps, IFAQCardsProps } from "@/app/features/Type/props";
-import { FaEdit, FaTrash, FaLink } from "react-icons/fa";
+import { IFAQCardsProps } from "@/app/features/Type/props";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 
-import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/features/Store";
-import {
-  setSelectedEmployee,
-  setSelectedEmployeeId,
-} from "@/app/features/appSlice/EmployeeSlice";
-import { BaseUrl } from "@/app/features/Type/BaseUrl";
-import { useEmployee } from "@/app/hooks/useEmployee";
-import UpdateEmployee from "./updateEmployee";
 import { useFAQ } from "@/app/hooks/useFAQ";
 import { setSelectedFAQId } from "@/app/features/appSlice/FAQSlice";
 import { setSelectedFAQ } from "@/app/features/appSlice/FAQSlice";

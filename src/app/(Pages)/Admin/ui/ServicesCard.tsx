@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { IProjectCardProps } from "@/app/features/Type/props";
 import { FaEdit, FaTrash, FaLink } from "react-icons/fa";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
-import Image from "next/image";
 import {
   setSelectedService,
   setSelectedserviceId,
@@ -14,6 +13,7 @@ import { RootState } from "@/app/features/Store";
 import UpdateServices from "./UpdateServices";
 import { useRouter } from "next/navigation";
 import { BaseUrl } from "@/app/features/Type/BaseUrl";
+import Image from "next/image";
 interface ServiceAdminProps extends IProjectCardProps {
   id: string;
   summary: string;
@@ -37,9 +37,7 @@ export default function ServiceAdmin({
   price,
   link,
   image,
-  buttonName,
   className,
-  children,
   buttonClassName,
 }: ServiceAdminProps) {
   const dispatch = useDispatch();
@@ -56,7 +54,7 @@ export default function ServiceAdmin({
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`rounded-2xl p-4 shadow-lg w-[400px] h-[450px] hover:shadow-xl transition-all duration-300 bg-white dark:bg-gray-800 ${
+        className={`rounded-2xl p-4 shadow-lg w-[400px] h-[450px] hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-DarkPrimary/5 to-transparent dark:bg-gray-800 ${
           className ?? ""
         }`}
         dir="rtl"
@@ -65,14 +63,12 @@ export default function ServiceAdmin({
           {/* Image Section */}
           {image && (
             <div className="relative w-full h-48 mb-2 rounded-xl overflow-hidden group">
-              <Image
-                src={BaseUrl+image}
-                alt={title || "Project image"}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <Image
+              src={`${BaseUrl}${image}` || ""}
+              alt={title || "Service image"}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>  
           )}
 
@@ -146,7 +142,7 @@ export default function ServiceAdmin({
               <PrimaryButton
                 content={"عرض التفاصيل"}
                 className={`text-xs px-3 py-1.5 rounded-lg ${
-                  buttonClassName ?? "bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-800"
+                  buttonClassName ?? "bg-DarkPrimary text-white hover:opacity-90 transition-all"
                 }`}
                 onClick={() => {
                   dispatch(setSelectedserviceId(id));

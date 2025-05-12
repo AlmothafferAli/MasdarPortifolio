@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import ContactInfo from "@/app/components/ContactInfo";
 import { useGetAllFAQsQuery } from "@/app/features/Api/FAQApi";
+import { motion } from "framer-motion";
+
 export default function ContactPage() {
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
   const { data: faqs, isLoading, error } = useGetAllFAQsQuery({ pageSize: 10, pageNumber: 1 });
@@ -14,7 +16,28 @@ export default function ContactPage() {
     message: "",
   });
 
-  
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
   const handleAccordionClick = (index: number) => {
     setActiveAccordion(activeAccordion === index ? null : index);
   };
@@ -36,18 +59,21 @@ export default function ContactPage() {
   };
 
   return (
-    <div
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
       className="w-full min-h-screen pt-28 bg-gray-50 gap-16 dark:bg-darkSecondary flex flex-col items-start justify-start px-4 md:px-32 py-12"
       dir="rtl"
     >
-      <div className="header w-full ">
+      <motion.div variants={itemVariants} className="header w-full ">
         <h1 className="text-4xl font-bold dark:text-[#fdfdfd] text-center">
           تواصل معنا
         </h1>
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-12">
-        <div className="FAQ  bg-DarkPrimary/80   transition-shadow duration-300  p-8 rounded-xl shadow-lg hover:shadow-xl">
+        <motion.div variants={itemVariants} className="FAQ  bg-DarkPrimary/80   transition-shadow duration-300  p-8 rounded-xl shadow-lg hover:shadow-xl">
           <h1 className="text-2xl font-bold text-white dark:text-[#fdfdfd]  mb-8">
             أسألة متداولة
           </h1>
@@ -82,9 +108,9 @@ export default function ContactPage() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        <div className="form  bg-gradient-to-tl from-DarkPrimary/5 dark:from-darkPrimary dark:to-darkPrimary to-transparent transition-shadow duration-300  p-8 rounded-xl shadow-lg hover:shadow-xl">
+        <motion.div variants={itemVariants} className="form  bg-gradient-to-tl from-DarkPrimary/5 dark:from-darkPrimary dark:to-darkPrimary to-transparent transition-shadow duration-300  p-8 rounded-xl shadow-lg hover:shadow-xl">
           <h1 className="text-2xl font-bold dark:text-[#fdfdfd] mb-8">
             تواصل معنا
           </h1>
@@ -168,9 +194,11 @@ export default function ContactPage() {
               إرسال
             </PrimaryButton>
           </form>
-        </div>
+        </motion.div>
       </div>
-      <ContactInfo />
-    </div>
+      <motion.div variants={itemVariants}>
+        <ContactInfo />
+      </motion.div>
+    </motion.div>
   );
 }

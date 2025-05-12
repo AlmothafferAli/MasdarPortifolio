@@ -11,7 +11,7 @@ export default function Ads1() {
                 <p className="text-xl md:text-2xl lg:text-3xl text-gray-600 dark:text-white" dir="rtl">
                     احصل على مشروعك الاول بأسعار مناسبة
                 </p>
-                <div className="text-5xl md:text-6xl lg:text-7xl font-bold text-blue-600" dir="rtl">
+                <div className="text-5xl md:text-6xl lg:text-7xl font-bold text-DarkPrimary" dir="rtl">
                     اشتري الان
                 </div>
             </div>
