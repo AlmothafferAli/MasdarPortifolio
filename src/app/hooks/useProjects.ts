@@ -22,7 +22,12 @@ export const useProjects = () => {
     data: projects,
     isLoading: isFetchingProjects,
     error: fetchProjectsError,
-  } = useGetAllProjectsQuery({ pageNumber: 1, pageSize: 10,companyId:company.id });
+  } = useGetAllProjectsQuery(
+    { pageNumber: 1, pageSize: 10, companyId: company.id },
+    {
+      skip: !company?.id,
+    }
+  );
   const [deleteProjectMutation] = useDeleteProjectMutation();
   const dispatch = useDispatch();
 

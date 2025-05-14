@@ -1,4 +1,4 @@
-import { motion  } from "framer-motion";
+import { motion } from "framer-motion";
 
 import ProjectCard from "./ProjectCard";
 
@@ -15,10 +15,15 @@ export default function Projects() {
   //   if (data) setProjects(data);
   // };
   const company = useSelector((state: RootState) => state.company.UCompany);
-  const { data } = useGetAllProjectsQuery({ pageNumber: 1, pageSize: 10,companyId:company.id });
+  const { data } = useGetAllProjectsQuery(
+    { pageNumber: 1, pageSize: 10, companyId: company?.id || "" },
+    {
+      skip: !company?.id,
+    }
+  );
 
   // Use example data if no data is fetched
-  const projects = data?.data ;
+  const projects = data?.data;
 
   const cardColors = [
     "#1E40AF", // deep blue
@@ -33,10 +38,7 @@ export default function Projects() {
   // }, [fetchProjects]);
 
   return (
-    <section
-      className="py-16 md:py-24 w-full"
-      id="projects"
-    >
+    <section className="py-16 md:py-24 w-full" id="projects">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -65,18 +67,18 @@ export default function Projects() {
           <div className="flex overflow-x-auto gap-2 md:gap-8 pb-8  snap-x snap-mandatory scrollbar-hide px-4">
             {projects && projects.length > 0 ? (
               projects.map((project, index) => (
-                <motion.div 
-                  key={index} 
+                <motion.div
+                  key={index}
                   className="flex-none w-[300px] md:w-[400px] snap-start"
                   initial={{ opacity: 0 }}
-                  whileInView={{ 
+                  whileInView={{
                     opacity: 1,
                     transition: {
                       type: "spring",
                       stiffness: 100,
                       damping: 20,
-                      mass: 1
-                    }
+                      mass: 1,
+                    },
                   }}
                   viewport={{ once: true, margin: "-100px" }}
                 >
@@ -99,12 +101,17 @@ export default function Projects() {
           </div>
         </div>
 
-{projects && projects.length > 0 ? (
-                <div className="mt-16 text-center">
-                   <PrimaryButton content="عرض المزيد" className="bg-DarkPrimary text-white hover:opacity-90 transition-all" />
-                </div>
-                ) : ""}
-                  </motion.div>
+        {projects && projects.length > 0 ? (
+          <div className="mt-16 text-center">
+            <PrimaryButton
+              content="عرض المزيد"
+              className="bg-DarkPrimary text-white hover:opacity-90 transition-all"
+            />
+          </div>
+        ) : (
+          ""
+        )}
+      </motion.div>
     </section>
   );
 }

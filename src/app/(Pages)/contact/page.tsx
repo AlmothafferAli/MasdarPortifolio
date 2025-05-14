@@ -1,37 +1,48 @@
 "use client";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import ContactInfo from "@/app/components/ContactInfo";
 import { useGetAllFAQsQuery } from "@/app/features/Api/FAQApi";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
-import { RootState } from "@/app/features/Store"; 
+import { RootState } from "@/app/features/Store";
+import { useUltraMsg } from "@/app/hooks/useUltraMsg";
+import { toast } from "react-toastify";
+import { IUltraMsg } from "@/app/features/Type/Interfaces";
 export default function ContactPage() {
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
   const company = useSelector((state: RootState) => state.company.UCompany);
-  const { data: faqs, isLoading, error } = useGetAllFAQsQuery({ pageSize: 10, pageNumber: 1,companyId:company.id });
+  const {
+    data: faqs,
+    isLoading,
+    error,
+  } = useGetAllFAQsQuery(
+    { pageSize: 10, pageNumber: 1, companyId: company.id },
+    {
+      skip: !company?.id,
+    }
+  );
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     subject: "",
     message: "",
   });
+  let data: IUltraMsg;
 
-  const data ={
-    phoneNumber:formData.phone,
-    message:formData.name+"\n" +formData.subject+"\n" +formData.message,
-  }
+  const { handleSendUltraMsg } = useUltraMsg();
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3
-      }
-    }
+        staggerChildren: 0.3,
+      },
+    },
   };
-
+  const [success, setSuccess] = useState(false);
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -39,9 +50,9 @@ export default function ContactPage() {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const handleAccordionClick = (index: number) => {
@@ -58,10 +69,36 @@ export default function ContactPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log(formData);
+
+    if (formData.phone.length !== 11 || !formData.phone.startsWith("078")) {
+      toast.error("رقم الهاتف يجب أن يبدأ بـ 078 ويتكون من 11 رقم");
+      return;
+    }
+
+    data = {
+      phoneNumber: formData.phone,
+      message:
+        formData.name + "\n" + formData.subject + "\n" + formData.message,
+    };
+
+    try {
+      await handleSendUltraMsg(data);
+      setSuccess(true);
+      setFormData({
+        name: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 5000);
+    } catch (error) {
+      toast.error("حدث خطأ أثناء إرسال الرسالة");
+    }
   };
 
   return (
@@ -79,7 +116,10 @@ export default function ContactPage() {
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-6 md:gap-12">
-        <motion.div variants={itemVariants} className="FAQ bg-DarkPrimary/80 transition-shadow duration-300 p-4 sm:p-6 md:p-8 rounded-xl shadow-lg hover:shadow-xl">
+        <motion.div
+          variants={itemVariants}
+          className="FAQ bg-DarkPrimary/80 transition-shadow duration-300 p-4 sm:p-6 md:p-8 rounded-xl shadow-lg hover:shadow-xl"
+        >
           <h1 className="text-xl md:text-2xl font-bold text-white dark:text-[#fdfdfd] mb-4 md:mb-8">
             أسألة متداولة
           </h1>
@@ -116,7 +156,10 @@ export default function ContactPage() {
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="form bg-gradient-to-tl from-DarkPrimary/5 dark:from-darkPrimary dark:to-darkPrimary to-transparent transition-shadow duration-300 p-4 sm:p-6 md:p-8 rounded-xl shadow-lg hover:shadow-xl">
+        <motion.div
+          variants={itemVariants}
+          className="form bg-gradient-to-tl from-DarkPrimary/5 dark:from-darkPrimary dark:to-darkPrimary to-transparent transition-shadow duration-300 p-4 sm:p-6 md:p-8 rounded-xl shadow-lg hover:shadow-xl"
+        >
           <h1 className="text-xl md:text-2xl font-bold dark:text-[#fdfdfd] mb-4 md:mb-8">
             تواصل معنا
           </h1>
@@ -144,7 +187,7 @@ export default function ContactPage() {
                 htmlFor="phone"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 md:mb-2"
               >
-رقم الهاتف
+                رقم الهاتف
               </label>
               <input
                 type="text"
@@ -205,6 +248,60 @@ export default function ContactPage() {
       <motion.div variants={itemVariants}>
         <ContactInfo />
       </motion.div>
+      {success && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+            onClick={() => setSuccess(false)}
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md"
+          >
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden">
+              <div className="p-6">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-full">
+                    <svg
+                      className="w-8 h-8 text-green-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    تم إرسال الرسالة بنجاح
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-300 mb-6">
+                    سنقوم بالرد عليك في أقرب وقت ممكن
+                  </p>
+                  <button
+                    onClick={() => setSuccess(false)}
+                    className="w-full bg-DarkPrimary text-white py-3 px-4 rounded-lg hover:bg-DarkPrimary/90 transition-colors duration-300"
+                  >
+                    حسناً
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
     </motion.div>
   );
 }

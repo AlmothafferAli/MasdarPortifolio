@@ -9,12 +9,18 @@ import { RootState } from "../features/Store";
 
 export default function Partners() {
   const company = useSelector((state: RootState) => state.company.UCompany);
-  const { data: partnersData, isLoading, error } = useGetAllPartnersQuery({ pageNumber: 1, pageSize: 10,companyId:company.id });
+  const {
+    data: partnersData,
+    isLoading,
+    error,
+  } = useGetAllPartnersQuery(
+    { pageNumber: 1, pageSize: 10, companyId: company?.id || "" },
+    {
+      skip: !company?.id,
+    }
+  );
   const partners = (partnersData as PageResponse<IPartner>)?.data ?? [];
-  
 
-
-  
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
@@ -57,29 +63,29 @@ export default function Partners() {
         </div>
 
         <div className="relative w-7/12 mx-auto max-w-[90rem]">
-        <Marquee
-  speed={100}
-  gradient={false}
-  pauseOnHover={true}
-  pauseOnClick={true}
-  delay={0}
-  play={true}
-  direction="right"
->
-  {partners.map((partner, index) => (
-    <div key={partner.id}>
-      <PartnerCard
-        link={partner.website}
-        website={partner.website}
-        name={partner.name}
-        logo={partner.logo}
-        id={partner.id}
-        children={<></>}
-
-      />
-    </div>
-  ))}
-</Marquee>         </div>
+          <Marquee
+            speed={100}
+            gradient={false}
+            pauseOnHover={true}
+            pauseOnClick={true}
+            delay={0}
+            play={true}
+            direction="right"
+          >
+            {partners.map((partner, index) => (
+              <div key={partner.id}>
+                <PartnerCard
+                  link={partner.website}
+                  website={partner.website}
+                  name={partner.name}
+                  logo={partner.logo}
+                  id={partner.id}
+                  children={<></>}
+                />
+              </div>
+            ))}
+          </Marquee>{" "}
+        </div>
       </motion.div>
     </section>
   );

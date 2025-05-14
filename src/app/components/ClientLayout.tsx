@@ -15,8 +15,8 @@ export default function ClientLayout({
   children: React.ReactNode;
 }) {
   const dispatch = useDispatch();
-  const { data: companyData} = useCompany();
- 
+  const { data: companyData, isLoading } = useCompany();
+
   useEffect(() => {
     if (companyData) {
       dispatch(setUCompany(companyData));
@@ -30,10 +30,19 @@ export default function ClientLayout({
     pathname?.startsWith("/signup") ||
     pathname?.startsWith("/Admin");
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
   return (
     <>
       {!isAuthPage && <Header />}
       {!isAuthPage && <HeaderOverlay />}
+
       <main className="flex-grow">{children}</main>
       {!isAuthPage && <Footer />}
     </>

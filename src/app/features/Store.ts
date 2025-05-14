@@ -17,7 +17,10 @@ import employeeReducer from "./appSlice/EmployeeSlice";
 import { PServiceApi } from "./Api/PServiceApi";
 import pserviceReducer from "./appSlice/PserviceSlice";
 import { FAQApi } from "./Api/FAQApi";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import faqReducer from "./appSlice/FAQSlice";
+import { UltraMsgApi } from "./Api/UltraMsgApi";
 const rootReducer = combineReducers({
   [UserApi.reducerPath]: UserApi.reducer,
   [CompanyApi.reducerPath]: CompanyApi.reducer,
@@ -27,20 +30,33 @@ const rootReducer = combineReducers({
   [partnersApi.reducerPath]: partnersApi.reducer,
   [EmployeeApi.reducerPath]: EmployeeApi.reducer,
   [PServiceApi.reducerPath]: PServiceApi.reducer,
+  [FAQApi.reducerPath]: FAQApi.reducer,
+  [serviceSlice.reducerPath]: serviceSlice.reducer,
+  [UltraMsgApi.reducerPath]: UltraMsgApi.reducer,
   header: headerReducer,
-  company: companyReducer,
+  company: companyReducer, // سيتم حفظ هذا في localStorage
   project: projectReducer,
   partner: partnerReducer,
-  pservice: pserviceReducer,
   employee: employeeReducer,
+  pservice: pserviceReducer,
   faq: faqReducer,
-  [serviceSlice.reducerPath]: serviceSlice.reducer,
-  [FAQApi.reducerPath]: FAQApi.reducer,
 });
+
+// إعداد redux-persist لتخزين جزء معين فقط (مثلاً company)
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["company"], // فقط company سيتم حفظه
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
+    getDefaultMiddleware({
+      serializableCheck: false, // لمنع مشاكل التحقق من التسلسل
+    }).concat(
       UserApi.middleware,
       CompanyApi.middleware,
       projectsApi.middleware,
@@ -49,11 +65,13 @@ const store = configureStore({
       partnersApi.middleware,
       EmployeeApi.middleware,
       PServiceApi.middleware,
-      FAQApi.middleware
+      FAQApi.middleware,
+      UltraMsgApi.middleware
     ),
   devTools: true,
 });
 
+export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export default store;

@@ -13,7 +13,12 @@ import { RootState } from "../features/Store";
 
 export const usePartners = () => {
   const company = useSelector((state: RootState) => state.company.UCompany);
-  const { data, isLoading, error } = useGetAllPartnersQuery({pageNumber:1,pageSize:10 ,companyId:company.id});
+  const { data, isLoading, error } = useGetAllPartnersQuery(
+    { pageNumber: 1, pageSize: 10, companyId: company.id },
+    {
+      skip: !company?.id,
+    }
+  );
   const [addPartner, { isLoading: isAddingPartner }] =
     useCreatePartnerMutation();
   const [updatePartnerMutation, { isLoading: isUpdatingPartner }] =
@@ -32,7 +37,7 @@ export const usePartners = () => {
     }
 
     try {
-      console.log("partner"+partner);
+      console.log("partner" + partner);
       await addPartner(partner).unwrap();
       toast.success("Partner created successfully");
     } catch (error: unknown) {

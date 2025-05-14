@@ -40,7 +40,7 @@ import { BaseUrl } from "@/app/features/Type/BaseUrl";
 
 export default function AdminPage() {
   const company = useSelector((state: RootState) => state.company.UCompany);
-  
+
   const [activeItem, setActiveItem] = useState<string>("setup");
   const [isEditAbout, setIsEditAbout] = useState(false);
   const [text, setText] = useState("اعداد الرئيسية");
@@ -50,46 +50,60 @@ export default function AdminPage() {
   const [isAddPartner, setIsAddPartner] = useState(false);
   const [isEditMain, setIsEditMain] = useState(false);
   const [isAddEmployee, setIsAddEmployee] = useState(false);
-  const [isAddCommunication, setIsAddCommunication] = useState(false);  
+  const [isAddCommunication, setIsAddCommunication] = useState(false);
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
-  const { data: employeesData, isLoading: isLoadingEmployees } = useGetEmployeesQuery(
-    activeItem === "employees" ? {
-      pageNumber: page,
-      pageSize: 10,
-      companyId: company.id,
-    } : skipToken
-  );
-  const { data: projectsData, isLoading: isLoadingProjects } = useGetAllProjectsQuery(
-    activeItem === "projects" ? {
-      pageNumber: page,
-      pageSize: 10,
-      companyId: company.id,
-    } : skipToken
-  );
-  const { data: servicesData, isLoading: isLoadingServices } = useGetAllServicesQuery(
-    activeItem === "services" ? {
-      pageNumber: page,
-      pageSize: 10,
-      companyId: company.id,
-    } : skipToken
-  );
-  const { data: partnersData, isLoading: isLoadingPartners } = useGetAllPartnersQuery(
-    activeItem === "partners" ? {
-      pageNumber: page,
-      pageSize: 10,
-      companyId: company.id,
-    } : skipToken
-  );
-  
+  const { data: employeesData, isLoading: isLoadingEmployees } =
+    useGetEmployeesQuery(
+      activeItem === "employees" && company.id
+        ? {
+            pageNumber: page,
+            pageSize: 10,
+            companyId: company.id,
+          }
+        : skipToken
+    );
+  const { data: projectsData, isLoading: isLoadingProjects } =
+    useGetAllProjectsQuery(
+      activeItem === "projects" && company.id
+        ? {
+            pageNumber: page,
+            pageSize: 10,
+            companyId: company.id,
+          }
+        : skipToken
+    );
+  const { data: servicesData, isLoading: isLoadingServices } =
+    useGetAllServicesQuery(
+      activeItem === "services" && company.id
+        ? {
+            pageNumber: page,
+            pageSize: 10,
+            companyId: company.id,
+          }
+        : skipToken
+    );
+  const { data: partnersData, isLoading: isLoadingPartners } =
+    useGetAllPartnersQuery(
+      activeItem === "partners" && company.id
+        ? {
+            pageNumber: page,
+            pageSize: 10,
+            companyId: company.id,
+          }
+        : skipToken
+    );
+
   const { data: faqsData, isLoading: isLoadingFAQs } = useGetAllFAQsQuery(
-    activeItem === "communication" ? {
-      pageSize: 10,
-      pageNumber: page,
-      companyId: company.id,
-    } : skipToken
+    activeItem === "communication" && company.id
+      ? {
+          pageSize: 10,
+          pageNumber: page,
+          companyId: company.id,
+        }
+      : skipToken
   );
-  
+
   const employees = useMemo(() => employeesData?.data ?? [], [employeesData]);
   const projects = useMemo(() => projectsData?.data ?? [], [projectsData]);
   const services = useMemo(() => servicesData?.data ?? [], [servicesData]);
@@ -98,7 +112,7 @@ export default function AdminPage() {
     [partnersData]
   );
   const faqs = useMemo(() => faqsData?.data ?? [], [faqsData]);
-  
+
   const handleButtonClick = () => {
     switch (activeItem) {
       case "setup":
@@ -169,16 +183,18 @@ export default function AdminPage() {
     }
   }, [activeItem]);
 
-  return ( 
+  return (
     <div className="flex flex-col md:flex-col lg:flex-row-reverse h-screen bg-gray-100">
       <Sidebar activeItem={activeItem} setActiveItem={setActiveItem} />
 
       {/* Main Content */}
-      <div className={`flex-1 bg-gray-50 lg:absolute lg:inset-0 lg:top-0 lg:right-0 z-20 lg:h-full lg:rounded-r-3xl shadow-2xl p-4 lg:p-8 pt-4 lg:pt-8 max-w-full lg:max-w-[calc(100%-200px)] 2xl:max-w-[calc(100%-230px)] flex flex-col gap-4 md:gap-6`}>
-        <Header 
-          text={text} 
-          buttonText={buttonText} 
-          onButtonClick={handleButtonClick} 
+      <div
+        className={`flex-1 bg-gray-50 lg:absolute lg:inset-0 lg:top-0 lg:right-0 z-20 lg:h-full lg:rounded-r-3xl shadow-2xl p-4 lg:p-8 pt-4 lg:pt-8 max-w-full lg:max-w-[calc(100%-200px)] 2xl:max-w-[calc(100%-230px)] flex flex-col gap-4 md:gap-6`}
+      >
+        <Header
+          text={text}
+          buttonText={buttonText}
+          onButtonClick={handleButtonClick}
         />
 
         {/* Content */}
@@ -222,7 +238,9 @@ export default function AdminPage() {
                         السابق
                       </button>
                       <button
-                        onClick={() => !projectsData?.isLast && setPage(page + 1)}
+                        onClick={() =>
+                          !projectsData?.isLast && setPage(page + 1)
+                        }
                         className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
                       >
                         التالي
@@ -233,7 +251,10 @@ export default function AdminPage() {
               </div>
             )}
             {activeItem === "about" && (
-              <AboutSection about={company.about} aboutImage={company.aboutImage} />
+              <AboutSection
+                about={company.about}
+                aboutImage={company.aboutImage}
+              />
             )}
             {activeItem === "partners" && (
               <div className="flex flex-col justify-between h-full">
@@ -261,8 +282,11 @@ export default function AdminPage() {
                       >
                         السابق
                       </button>
-                      <button className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
-                        onClick={() => !partnersData?.isLast && setPage(page + 1)}
+                      <button
+                        className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
+                        onClick={() =>
+                          !partnersData?.isLast && setPage(page + 1)
+                        }
                       >
                         التالي
                       </button>
@@ -309,7 +333,9 @@ export default function AdminPage() {
                         السابق
                       </button>
                       <button
-                        onClick={() => !employeesData?.isLast && setPage(page + 1)}
+                        onClick={() =>
+                          !employeesData?.isLast && setPage(page + 1)
+                        }
                         className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
                       >
                         التالي
@@ -352,7 +378,9 @@ export default function AdminPage() {
                         السابق
                       </button>
                       <button
-                        onClick={() => !servicesData?.isLast && setPage(page + 1)}
+                        onClick={() =>
+                          !servicesData?.isLast && setPage(page + 1)
+                        }
                         className="w-full sm:w-auto bg-[#31a4dc] hover:bg-[#1e88e5] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 text-sm sm:text-base"
                       >
                         التالي
@@ -407,7 +435,6 @@ export default function AdminPage() {
           </div>
         )}
       </div>
-
     </div>
   );
 }

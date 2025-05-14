@@ -164,7 +164,6 @@ export interface IPartnerRequest {
   logo: string;
   introduction: string;
   website: string;
-
 }
 export interface IPartnersCreateRequest {
   name: string;
@@ -235,7 +234,6 @@ export interface IPserviceResponse {
   image: string;
 }
 
-
 export interface IFAQ {
   question: string;
   answer: string;
@@ -247,9 +245,12 @@ export interface IFAQUpdateRequest {
   question: string;
   answer: string;
 }
-export interface IFAQDto{
+export interface IFAQDto {
   question: string;
   answer: string;
 }
+export interface IUltraMsg {
+  phoneNumber: string;
 
-
+  message: string;
+}

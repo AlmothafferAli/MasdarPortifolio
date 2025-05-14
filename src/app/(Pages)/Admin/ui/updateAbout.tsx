@@ -1,6 +1,6 @@
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 import PrimaryInput from "@/app/components/EleComponents/PrimaryInput";
-import { setCompany } from "@/app/features/appSlice/companySlices";
+import { setUCompany } from "@/app/features/appSlice/companySlices";
 import { ICompanyResponse } from "@/app/features/Type/Interfaces";
 import useCompany from "@/app/hooks/useCompany";
 import { useFile } from "@/app/hooks/useFile";
@@ -33,7 +33,7 @@ export default function UpdateAbout({
     console.log(upCompany);
     console.log(companyData);
     if (companyData) {
-      dispatch(setCompany(companyData));
+      dispatch(setUCompany(companyData));
     }
   };
 

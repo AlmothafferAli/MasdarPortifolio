@@ -19,9 +19,9 @@ export default function CreateEmployee({
     description: "",
     employeeRole: "",
     employeeImage: "",
-    companyId: company.id,
+    companyId: company?.id || "",
   });
-  const { createEmployee, isLoading} = useEmployee();
+  const { createEmployee, isLoading } = useEmployee();
 
   const handleCreateEmployee = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -1,4 +1,3 @@
-
 import { useState, ChangeEvent } from "react";
 import PrimaryInput from "@/app/components/EleComponents/PrimaryInput";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
@@ -12,18 +11,19 @@ export default function CreateFAQ({
   setIsAddFAQ: (isAddFAQ: boolean) => void;
 }) {
   const company = useSelector((state: RootState) => state.company.UCompany);
-  const [faq, setFaq] = useState<IFAQ>({
-    question: "",
-    answer: "",
-    companyId: company.id,
+  const [faq, setFaq] = useState<IFAQ>(
+    {
+      question: "",
+      answer: "",
+      companyId: company?.id || "",
   });
-  const { createFAQ, isAddingFAQ} = useFAQ();
+  const { createFAQ, isAddingFAQ } = useFAQ();
 
   const handleCreateFAQ = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await createFAQ(faq);
   };
-  
+
   return (
     <>
       <form
@@ -65,24 +65,21 @@ export default function CreateFAQ({
                 />
               </div>
               <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                الجواب *
-              </label>
-              <PrimaryInput
-                type="text"
-                value={faq.answer}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setFaq({ ...faq, answer: e.target.value })
-                }
-                placeholder="أدخل الجواب"
-                className="w-full text-right"
-                required
-              />
-            </div>
-
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  الجواب *
+                </label>
+                <PrimaryInput
+                  type="text"
+                  value={faq.answer}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setFaq({ ...faq, answer: e.target.value })
+                  }
+                  placeholder="أدخل الجواب"
+                  className="w-full text-right"
+                  required
+                />
               </div>
-
-            
+            </div>
 
             <div className="pt-6">
               <PrimaryButton

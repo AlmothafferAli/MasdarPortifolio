@@ -17,4 +17,4 @@ export const GetAll = "/GetAll";
 export const Update = "/Update";
 export const Delete = "/Delete";
 export const Get = "/Get";
-
+export const UltraMsgUrl = "UltraMsg";

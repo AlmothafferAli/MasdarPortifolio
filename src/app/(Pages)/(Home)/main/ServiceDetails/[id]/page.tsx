@@ -1,11 +1,10 @@
 "use client";
 
-
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 import { useGetAllServicesQuery } from "@/app/features/Api/ServicesApi";
 import { BaseUrl } from "@/app/features/Type/BaseUrl";
 import { IService, PageResponse } from "@/app/features/Type/Interfaces";
-import  ButtonTheme  from "@/app/components/EleComponents/ButtonTheme";
+import ButtonTheme from "@/app/components/EleComponents/ButtonTheme";
 import { PlayCircle } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -13,20 +12,23 @@ import { useState } from "react";
 import { tokenUtils } from "@/app/Utils/TokenUtils";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/features/Store";
-export default function ProductPage({
-
-}) {
+export default function ProductPage({}) {
   const Admin = tokenUtils.getUserRole() === "Admin";
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const { id } = useParams();
   const company = useSelector((state: RootState) => state.company.UCompany);
-  const { data: serviceData } = useGetAllServicesQuery({pageNumber:1,pageSize:10,companyId:company.id});
+  const { data: serviceData } = useGetAllServicesQuery(
+    { pageNumber: 1, pageSize: 10, companyId: company?.id || "" },
+    {
+      skip: !company?.id,
+    }
+  );
   const service = (serviceData as PageResponse<IService>)?.data ?? [];
   const serviceDetails = service.find((p) => p.id === id);
- const serviceLists = {
+  const serviceLists = {
     benefits: [serviceDetails?.benefits],
     features: [serviceDetails?.features],
-  }  
+  };
   // Use the id from params to get the product details
 
   return (
@@ -46,7 +48,7 @@ export default function ProductPage({
             </p>
             <div className="pt-4">
               <PrimaryButton className="h-14 px-8 text-lg bg-DarkPrimary text-amber-50 rounded-xl hover:opacity-90 transition-all">
-              {serviceDetails?.price}
+                {serviceDetails?.price}
               </PrimaryButton>
             </div>
           </div>
@@ -166,14 +168,12 @@ export default function ProductPage({
           </PrimaryButton>
         </div>
       </div>
-      {Admin&&(
-      <ButtonTheme
-        className="z-[99999] transform hover:rotate-12 transition-transform duration-300 absolute top-2 right-2 md:top-4 md:right-4"
-        onClick={() => {
-
-        }}
+      {Admin && (
+        <ButtonTheme
+          className="z-[99999] transform hover:rotate-12 transition-transform duration-300 absolute top-2 right-2 md:top-4 md:right-4"
+          onClick={() => {}}
         >
-         تعديل التفاصيل
+          تعديل التفاصيل
         </ButtonTheme>
       )}
     </div>
