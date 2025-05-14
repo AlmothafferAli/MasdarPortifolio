@@ -8,9 +8,12 @@ import { useCreatePartnerMutation } from "../features/Api/partnersApi";
 import { useUpdatePartnerMutation } from "../features/Api/partnersApi";
 import { useDeletePartnerMutation } from "../features/Api/partnersApi";
 import { handleError } from "./useHandleError";
+import { useSelector } from "react-redux";
+import { RootState } from "../features/Store";
 
 export const usePartners = () => {
-  const { data, isLoading, error } = useGetAllPartnersQuery({pageNumber:1,pageSize:10});
+  const company = useSelector((state: RootState) => state.company.UCompany);
+  const { data, isLoading, error } = useGetAllPartnersQuery({pageNumber:1,pageSize:10 ,companyId:company.id});
   const [addPartner, { isLoading: isAddingPartner }] =
     useCreatePartnerMutation();
   const [updatePartnerMutation, { isLoading: isUpdatingPartner }] =
@@ -29,6 +32,7 @@ export const usePartners = () => {
     }
 
     try {
+      console.log("partner"+partner);
       await addPartner(partner).unwrap();
       toast.success("Partner created successfully");
     } catch (error: unknown) {

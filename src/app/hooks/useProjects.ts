@@ -12,14 +12,17 @@ import {
 import { toast } from "react-toastify";
 import { setDeletedProjectId } from "../features/appSlice/projectSlice";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../features/Store";
 export const useProjects = () => {
+  const company = useSelector((state: RootState) => state.company.UCompany);
   const [addProject, { isLoading: isAddingProject, error: addProjectError }] =
     useAddProjectMutation();
   const {
     data: projects,
     isLoading: isFetchingProjects,
     error: fetchProjectsError,
-  } = useGetAllProjectsQuery({ pageNumber: 1, pageSize: 10 });
+  } = useGetAllProjectsQuery({ pageNumber: 1, pageSize: 10,companyId:company.id });
   const [deleteProjectMutation] = useDeleteProjectMutation();
   const dispatch = useDispatch();
 

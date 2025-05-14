@@ -4,17 +4,18 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 import { BaseUrl } from "@/app/features/Type/BaseUrl";
-import { useGetCompanyQuery } from "@/app/features/Api/CompanyApi";
 import Services from "@/app/components/Services";
 import Partners from "@/app/components/partners";
 import { useRouter } from "next/navigation";
 import { useGetEmployeesQuery } from "@/app/features/Api/EmployeeApi";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/features/Store";
 export default function About() {
-  const { data: companyData } = useGetCompanyQuery();
+  const company = useSelector((state: RootState) => state.company.UCompany);
   const router = useRouter();
-  const about = useMemo(() => companyData?.about, [companyData]);
-  const aboutImage = useMemo(() => companyData?.aboutImage, [companyData]);
-  const { data: employees } = useGetEmployeesQuery({ pageNumber: 1, pageSize: 10 });
+  const about = useMemo(() => company?.about, [company]);
+  const aboutImage = useMemo(() => company?.aboutImage, [company]);
+  const { data: employees } = useGetEmployeesQuery({ pageNumber: 1, pageSize: 10 ,companyId: company?.id});
   const workers = useMemo(() => employees?.data, [employees]);
   
   return (

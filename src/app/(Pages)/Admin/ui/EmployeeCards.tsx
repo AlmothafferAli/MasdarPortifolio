@@ -29,6 +29,7 @@ export default function EmployeeCards({
   const [deletedEmployeeId, setDeletedEmployeeId] = useState<string | null>(
     null
   );
+  const company = useSelector((state: RootState) => state.company.UCompany);
   const { deleteEmployee } = useEmployee();
 
   const { selectedEmployeeId } = useSelector(
@@ -81,9 +82,7 @@ export default function EmployeeCards({
                           employeeImage: employee?.employeeImage || "",
                           description: employee?.description || "",
                           employeeRole: employee?.employeeRole || "",
-                          companyId:
-                            employee?.companyId ||
-                            "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+                          companyId: company.id,
                         })
                       );
                     }}

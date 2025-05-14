@@ -28,7 +28,7 @@ const ContactInfo = () => {
   return (
     <div className="w-full py-16 bg-gradient-to-b from-white via-gray-50 to-gray-100 dark:from-gray-900/30 dark:via-gray-900/20 dark:to-black/20 rounded-3xl">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {contactDetails.map((item, index) => (
             <div
               key={index}

@@ -31,19 +31,19 @@ export const ServicesApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    addService: builder.mutation<IServiceDto, IServiceRequest>({
+    addService: builder.mutation<IServiceUpdateRequest,IServiceDto>({
       query: (service) => ({
         url: Add,
         method: "POST",
         body: service,
       }),
     }),
-    getAllServices: builder.query<PageResponse<IService>, { pageNumber: number, pageSize: number }>({
-      query: ({ pageNumber, pageSize }) => ({
+    getAllServices: builder.query<PageResponse<IService>, { pageNumber: number, pageSize: number,companyId:string }>({
+      query: ({ pageNumber, pageSize,companyId }) => ({
         url: GetAll,
         method: "GET",
         params: {
-          companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+          companyId: companyId,
           pageNumber: pageNumber,
           pageSize: pageSize,
         },

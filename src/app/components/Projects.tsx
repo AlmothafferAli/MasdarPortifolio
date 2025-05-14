@@ -4,7 +4,8 @@ import ProjectCard from "./ProjectCard";
 
 import { useGetAllProjectsQuery } from "../features/Api/projectsApi";
 import PrimaryButton from "./EleComponents/PrimaryButton";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../features/Store";
 export default function Projects() {
   // const { getAllProjects } = useProjects();
   // const [projects, setProjects] = useState<IProject[]>([]);
@@ -13,8 +14,8 @@ export default function Projects() {
   //   const data = await getAllProjects();
   //   if (data) setProjects(data);
   // };
-
-  const { data } = useGetAllProjectsQuery({ pageNumber: 1, pageSize: 10 });
+  const company = useSelector((state: RootState) => state.company.UCompany);
+  const { data } = useGetAllProjectsQuery({ pageNumber: 1, pageSize: 10,companyId:company.id });
 
   // Use example data if no data is fetched
   const projects = data?.data ;

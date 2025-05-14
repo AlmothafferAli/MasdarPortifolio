@@ -11,13 +11,16 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { tokenUtils } from "@/app/Utils/TokenUtils";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/features/Store";
 export default function ProductPage({
 
 }) {
   const Admin = tokenUtils.getUserRole() === "Admin";
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const { id } = useParams();
-  const { data: serviceData } = useGetAllServicesQuery({pageNumber:1,pageSize:10});
+  const company = useSelector((state: RootState) => state.company.UCompany);
+  const { data: serviceData } = useGetAllServicesQuery({pageNumber:1,pageSize:10,companyId:company.id});
   const service = (serviceData as PageResponse<IService>)?.data ?? [];
   const serviceDetails = service.find((p) => p.id === id);
  const serviceLists = {

@@ -23,13 +23,14 @@ export const FAQApi = createApi({
   }),
 
   endpoints: (builder) => ({
-    getAllFAQs: builder.query<PageResponse<IFAQUpdateRequest>, { pageSize: number, pageNumber: number }>({
-      query: ({ pageSize, pageNumber }) => ({
+    getAllFAQs: builder.query<PageResponse<IFAQUpdateRequest>, { pageSize: number, pageNumber: number,companyId:string }>({
+      query: ({ pageSize, pageNumber,companyId }) => ({
         url: GetAll,
         method: "GET",
         params: {
             PageSize: pageSize,
             PageNumber: pageNumber,
+            companyId: companyId,
         },
       }),
     }),

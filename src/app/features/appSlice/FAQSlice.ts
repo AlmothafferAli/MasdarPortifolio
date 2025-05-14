@@ -14,12 +14,12 @@ const initialState: FAQState = {
   selectedFAQ: {
     question: "",
     answer: "",
-    companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+    companyId: "",
   },
   editedFAQ: {
     question: "",
     answer: "",
-    companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+    companyId: "",
   },
 };
 

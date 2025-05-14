@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useGetPartnerByIdQuery } from "../../../../features/Api/partnersApi";
 import { useParams } from "next/navigation";
 import { useGetAllPServicesQuery } from "../../../../features/Api/PServiceApi";
-
+import { BaseUrl } from "@/app/features/Type/BaseUrl";
 export default function PartnerPage() {
   const { id } = useParams();
   const { data: partnerData } = useGetPartnerByIdQuery(id as string);
@@ -32,7 +32,7 @@ export default function PartnerPage() {
         <div className="flex flex-col md:flex-row gap-6 md:gap-8">
           <div className="w-full md:w-1/4 aspect-square">
             <Image
-              src={"http://192.168.77.191:8081/" + partner?.logo}
+              src={BaseUrl + partner?.logo}
               alt={partner?.name || "partner logo"}
               width={500}
               height={500}
@@ -67,7 +67,7 @@ export default function PartnerPage() {
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
               <div className="md:col-span-3 aspect-square">
                 <Image
-                  src={"http://192.168.77.191:8081/" + service.image}
+                  src={BaseUrl + service.image}
                   alt={service.name}
                   width={500}
                   height={500}

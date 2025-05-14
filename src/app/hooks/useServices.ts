@@ -10,16 +10,19 @@ import {
   IServiceRequest,
   IServiceUpdateRequest,
 } from "../features/Type/Interfaces";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { RootState } from "../features/Store";
 export default function useServices() {
   const dispatch = useDispatch();
+  const company = useSelector((state: RootState) => state.company.UCompany);
   const [addService] = useAddServiceMutation();
   const [deleteServiceMutation] = useDeleteServiceMutation();
   const [updateServiceMutation] = useUpdateServiceMutation();
   const { data, isLoading, error } = useGetAllServicesQuery({
     pageNumber: 1,
     pageSize: 10,
+    companyId: company.id,
   });
 
   const createService = async (service: IServiceRequest) => {

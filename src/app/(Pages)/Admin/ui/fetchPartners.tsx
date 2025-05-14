@@ -15,6 +15,7 @@ import {
 } from "@/app/features/appSlice/partnerSlice";
 import UpdatePartners from "./updatePartners";
 import PService from "./Pservice";
+import { BaseUrl } from "@/app/features/Type/BaseUrl";
 
 interface PartnerAdminProps extends IProjectCardProps {
   id: string;
@@ -48,7 +49,7 @@ export default function PartnerAdmin({
   );
   const [isServices, setIsServices] = useState(false);
 
-  console.log("http://192.168.77.191:8081/" + logo);
+  console.log(BaseUrl + logo);
   return (
     deletedPartnerId !== id && (
       <motion.div
@@ -63,7 +64,7 @@ export default function PartnerAdmin({
           {logo && (
             <div className="relative w-full h-48 mb-4 rounded-xl overflow-hidden group">
               <Image
-                src={"http://192.168.77.191:8081/" + logo}
+                src={BaseUrl + logo}
                 alt={name || "Partner logo"}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -148,7 +149,7 @@ export default function PartnerAdmin({
               />
             </div>
             {isDeleting && id === selectedPartnerId && (
-              <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="fixed z-50 inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
                 <div className="bg-white p-4 rounded-lg">
                   <h1 className="text-xl mb-4">
                     Are you sure you want to delete this partner?

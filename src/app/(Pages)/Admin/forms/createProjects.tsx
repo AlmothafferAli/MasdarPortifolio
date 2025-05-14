@@ -5,20 +5,22 @@ import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 import { useFile } from "@/app/hooks/useFile";
 import { toast } from "react-toastify";
 import { useAddProjectMutation } from "@/app/features/Api/projectsApi";
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/features/Store";
 export default function CreateProjects({
   setIsAddProject,
 }: {
   setIsAddProject: (isAddProject: boolean) => void;
 }) {
   const { handleUpload } = useFile();
+  const company = useSelector((state: RootState) => state.company.UCompany);
   const [project, setProject] = useState<IProjectRequest>({
     name: "",
     description: "",
     image: "",
     logo: "",
     images: [""],
-    companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+    companyId: company.id,
   });
   const [addProject, { isLoading }] = useAddProjectMutation();
 

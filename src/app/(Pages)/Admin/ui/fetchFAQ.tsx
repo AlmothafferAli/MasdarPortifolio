@@ -14,6 +14,7 @@ export default function FAQCards({
   faq,
   className,
  }: IFAQCardsProps) {
+  const company = useSelector((state: RootState) => state.company.UCompany);
   const dispatch = useDispatch();
   const [isDeleting, setIsDeleting] = useState(false);
   const [deletedFAQId, setDeletedFAQId] = useState<string | null>(
@@ -54,8 +55,7 @@ export default function FAQCards({
                         setSelectedFAQ({
                           question: faq?.question || "",
                           answer: faq?.answer || "",
-                          companyId:
-                            "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+                          companyId: company.id,
                         })
                       );
                     }}

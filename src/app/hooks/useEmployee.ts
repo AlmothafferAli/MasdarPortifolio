@@ -7,9 +7,11 @@ import {
 import { useGetEmployeesQuery } from "../features/Api/EmployeeApi";
 import { IEmployeeDto } from "../features/Type/Interfaces";
 import { handleError } from "./useHandleError";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../features/Store";
 export const useEmployee = () => {
-  const { data, isLoading, error } = useGetEmployeesQuery({pageNumber:1,pageSize:10});
+  const company = useSelector((state: RootState) => state.company.UCompany);
+  const { data, isLoading, error } = useGetEmployeesQuery({pageNumber:1,pageSize:10,companyId:company?.id || "" });
   const [addEmployee, { isLoading: isAddingEmployee }] =
     useAddEmployeeMutation();
   const [updateEmployeeMutation, { isLoading: isUpdatingEmployee }] =

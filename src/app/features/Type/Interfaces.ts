@@ -121,7 +121,7 @@ export interface IServiceRequest {
   features: string;
   price: string;
   link: string;
-  companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d";
+  companyId: string;
 }
 export interface IServiceUpdateRequest {
   name: string;
@@ -155,7 +155,7 @@ export interface IServiceDto {
   features: string;
   price: string;
   link: string;
-  companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d";
+  companyId: string;
 }
 
 export interface IPartnerRequest {
@@ -171,7 +171,7 @@ export interface IPartnersCreateRequest {
   logo: string;
   website: string;
   introduction: string;
-  companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d";
+  companyId: string;
 }
 export interface IPartnerUpdateRequest {
   name: string;
@@ -205,14 +205,14 @@ export interface IEmployee {
   description: string;
   employeeRole: string;
   employeeImage: string;
-  companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d";
+  companyId: string;
 }
 export interface IEmployeeDto {
   name: string;
   description: string;
   employeeRole: string;
   employeeImage: string;
-  companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d";
+  companyId: string;
 }
 export interface IPService {
   id: string;
@@ -239,7 +239,7 @@ export interface IPserviceResponse {
 export interface IFAQ {
   question: string;
   answer: string;
-  companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d";
+  companyId: string;
 }
 
 export interface IFAQUpdateRequest {

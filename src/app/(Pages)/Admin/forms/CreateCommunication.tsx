@@ -4,16 +4,18 @@ import PrimaryInput from "@/app/components/EleComponents/PrimaryInput";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 import { IFAQ } from "@/app/features/Type/Interfaces";
 import { useFAQ } from "@/app/hooks/useFAQ";
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/features/Store";
 export default function CreateFAQ({
   setIsAddFAQ,
 }: {
   setIsAddFAQ: (isAddFAQ: boolean) => void;
 }) {
+  const company = useSelector((state: RootState) => state.company.UCompany);
   const [faq, setFaq] = useState<IFAQ>({
     question: "",
     answer: "",
-    companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+    companyId: company.id,
   });
   const { createFAQ, isAddingFAQ} = useFAQ();
 

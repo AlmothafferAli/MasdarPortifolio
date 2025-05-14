@@ -5,19 +5,21 @@ import { useFile } from "@/app/hooks/useFile";
 import { toast } from "react-toastify";
 import { useEmployee } from "@/app/hooks/useEmployee";
 import { IEmployeeDto } from "@/app/features/Type/Interfaces";
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/features/Store";
 export default function CreateEmployee({
   setIsAddEmployee,
 }: {
   setIsAddEmployee: (isAddEmployee: boolean) => void;
 }) {
   const { handleUpload } = useFile();
+  const company = useSelector((state: RootState) => state.company.UCompany);
   const [employee, setEmployee] = useState<IEmployeeDto>({
     name: "",
     description: "",
     employeeRole: "",
     employeeImage: "",
-    companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+    companyId: company.id,
   });
   const { createEmployee, isLoading} = useEmployee();
 

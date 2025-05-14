@@ -38,13 +38,13 @@ export const projectsApi = createApi({
     }),
     GetAllProjects: builder.query<
       PageResponse<IProject>,
-      { pageNumber: number; pageSize: number }
+      { pageNumber: number; pageSize: number,companyId:string }
     >({
-      query: ({ pageSize, pageNumber }) => ({
+      query: ({ pageSize, pageNumber,companyId }) => ({
         url: GetAll,
         method: "GET",
         params: {
-          companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+          companyId: companyId,
           pageSize: pageSize,
           pageNumber: pageNumber,
         },
@@ -54,9 +54,7 @@ export const projectsApi = createApi({
       query: (id) => ({
         url: `${Delete}/${id}`,
         method: "DELETE",
-        params: {
-          companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
-        },
+        
       }),
     }),
 

@@ -5,6 +5,8 @@ import { useFile } from "@/app/hooks/useFile";
 import { toast } from "react-toastify";
 import { usePartners } from "@/app/hooks/usePartners";
 import { IPartnersCreateRequest } from "@/app/features/Type/Interfaces";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/features/Store";
 export default function CreatePartners({
   setIsAddPartner,
 }: {
@@ -12,18 +14,19 @@ export default function CreatePartners({
 }) {
   const { createPartner } = usePartners();
   const { handleUpload } = useFile();
+  const company = useSelector((state: RootState) => state.company.UCompany);
   const [partner, setPartner] = useState<IPartnersCreateRequest>({
     name: "",
     logo: "",
-    website: "",
-    companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+    website: "",  
     introduction: "",
-  });
+    companyId: company.id,
+    });
   const [isLoading] = useState(false);
 
   const handleCreatePartner = async () => {
     if (!partner?.logo) {
-      toast.error("Please upload both logo and image");
+      toast.error("Please upload logo");
       return;
     }
 
@@ -31,7 +34,7 @@ export default function CreatePartners({
   };
   const handleFileUpload = async (
     e: ChangeEvent<HTMLInputElement>,
-    field: "logo" | "image"
+    
   ) => {
     try {
       if (!e.target.files || e.target.files.length === 0) return;
@@ -39,11 +42,11 @@ export default function CreatePartners({
       const url = await handleUpload(e);
       setPartner((prev) => ({
         ...prev,
-        [field]: url,
+        logo: url,
       }));
     } catch (error) {
       console.error(error);
-      toast.error(`Failed to upload ${field}`);
+      toast.error(`Failed to upload logo`);
     }
   };
 
@@ -108,10 +111,10 @@ export default function CreatePartners({
                 <PrimaryInput
                   type="file"
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleFileUpload(e, "logo")
+                    handleFileUpload(e)
                   }
                   className="w-full text-right"
-                  accept="image/*"
+                  
                 />
               </div>
             </div>

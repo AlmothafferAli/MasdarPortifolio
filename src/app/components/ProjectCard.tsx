@@ -3,7 +3,7 @@ import PrimaryButton from "./EleComponents/PrimaryButton";
 import React from "react";
 import { IProjectCardProps } from "@/app/features/Type/props";
 import Image from "next/image";
-
+import { BaseUrl } from "@/app/features/Type/BaseUrl";
 export default function ProjectCard({
   title,
   description,
@@ -12,6 +12,8 @@ export default function ProjectCard({
   buttonClassName,
   color,
 }: IProjectCardProps) {
+  const imageUrl = BaseUrl + image;
+  console.log(imageUrl);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -27,7 +29,7 @@ export default function ProjectCard({
       >
         <div className="relative aspect-[16/9] w-full overflow-hidden">
           <Image
-            src={"http://192.168.77.191:8081/" + image}
+            src={imageUrl}
             alt={title ?? ""}
             fill
             className="object-cover transform group-hover:scale-105 transition-transform duration-500"

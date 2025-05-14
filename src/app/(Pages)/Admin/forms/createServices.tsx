@@ -5,12 +5,14 @@ import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
 import { useFile } from "@/app/hooks/useFile";
 
 import useServices from "@/app/hooks/useServices";
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/features/Store";
 export default function CreateServices({
   setIsAddService,
 }: {
   setIsAddService: (isAddService: boolean) => void;
 }) {
+  const company = useSelector((state: RootState) => state.company.UCompany);  
   const { createService } = useServices();
   const { handleUpload } = useFile();
   const [service, setService] = useState<IServiceRequest>({
@@ -23,7 +25,7 @@ export default function CreateServices({
     features: "",
     price: "",
     link: "",
-    companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+    companyId: company.id,
   });
   const [isLoading] = useState(false);
   const handleCreateService = async (e: FormEvent<HTMLFormElement>) => {

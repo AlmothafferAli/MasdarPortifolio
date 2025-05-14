@@ -4,10 +4,12 @@ import { PageResponse } from "../features/Type/Interfaces";
 import { useGetAllPartnersQuery } from "../features/Api/partnersApi";
 import PartnerCard from "./partnercard";
 import Marquee from "react-fast-marquee";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../features/Store";
 
 export default function Partners() {
-  const { data: partnersData, isLoading, error } = useGetAllPartnersQuery({ pageNumber: 1, pageSize: 10 });
+  const company = useSelector((state: RootState) => state.company.UCompany);
+  const { data: partnersData, isLoading, error } = useGetAllPartnersQuery({ pageNumber: 1, pageSize: 10,companyId:company.id });
   const partners = (partnersData as PageResponse<IPartner>)?.data ?? [];
   
 
@@ -54,24 +56,30 @@ export default function Partners() {
           </p>
         </div>
 
-        <div className="relative">
-          <Marquee speed={50}
-          gradient={false}
-          pauseOnHover={true}
-          pauseOnClick={true}
-          delay={0}
-          play={true}
-          direction="right"
-          >
-            {partners.map((partner) => (
-              <div key={partner.id}>
-                <PartnerCard link={partner.website} website={partner.website} name={partner.name} logo={partner.logo}  id={partner.id} >
-                  <></>
-                  </PartnerCard >
-              </div>
-            ))}
-          </Marquee>
-         </div>
+        <div className="relative w-7/12 mx-auto max-w-[90rem]">
+        <Marquee
+  speed={100}
+  gradient={false}
+  pauseOnHover={true}
+  pauseOnClick={true}
+  delay={0}
+  play={true}
+  direction="right"
+>
+  {partners.map((partner, index) => (
+    <div key={partner.id}>
+      <PartnerCard
+        link={partner.website}
+        website={partner.website}
+        name={partner.name}
+        logo={partner.logo}
+        id={partner.id}
+        children={<></>}
+
+      />
+    </div>
+  ))}
+</Marquee>         </div>
       </motion.div>
     </section>
   );

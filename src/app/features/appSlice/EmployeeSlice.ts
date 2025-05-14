@@ -16,14 +16,14 @@ const initialState: EmployeeState = {
     employeeImage: "",
     description: "",
     employeeRole: "",
-    companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+    companyId: "",
   },
   editedEmployee: {
     name: "",
     employeeImage: "",
     description: "",
     employeeRole: "",
-    companyId: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+    companyId: "",
   },
 };
 

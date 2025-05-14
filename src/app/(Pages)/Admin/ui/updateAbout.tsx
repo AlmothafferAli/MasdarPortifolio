@@ -21,7 +21,7 @@ export default function UpdateAbout({
 
   const updateCompanyData = async () => {
     const companyData = await updateCompany(
-      "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+      company.id,
       {
         name: upCompany.name,
         description: upCompany.description,

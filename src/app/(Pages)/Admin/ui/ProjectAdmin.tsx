@@ -13,6 +13,7 @@ import { useProjects } from "@/app/hooks/useProjects";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/features/Store";
 import UpdateProjects from "./UpdateProjects";
+import { BaseUrl } from "@/app/features/Type/BaseUrl";
 
 interface ProjectAdminCardProps extends IProjectCardProps {
   id: string;
@@ -61,7 +62,7 @@ export default function ProjectAdminCard({
           files: [],
         };
 
-  console.log("http://192.168.77.191:8081/" + image);
+  console.log(BaseUrl + project.image);
   return (
     deletedProjectId !== id && (
       <motion.div
@@ -76,7 +77,7 @@ export default function ProjectAdminCard({
           {image && (
             <div className="relative w-full h-48 mb-4 rounded-xl overflow-hidden group">
               <Image
-                src={"http://192.168.77.191:8081/" + project.image}
+                src={BaseUrl + project.image}
                 alt={project.name || "Project image"}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"

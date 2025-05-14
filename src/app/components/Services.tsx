@@ -2,10 +2,13 @@ import { useGetAllServicesQuery } from "../features/Api/ServicesApi";
 import { motion } from "framer-motion";
 import PrimaryButton from "../components/EleComponents/PrimaryButton";
 import ProjectCard from "./ProjectCard";
+import { useSelector } from "react-redux";
+import { RootState } from "../features/Store";
 
 
 export default function Services() {
-    const { data: servicesData, isLoading } = useGetAllServicesQuery({ pageNumber: 1, pageSize: 10 });
+    const company = useSelector((state: RootState) => state.company.UCompany);
+    const { data: servicesData, isLoading } = useGetAllServicesQuery({ pageNumber: 1, pageSize: 10,companyId:company.id });
     const services = servicesData?.data
 
     if (isLoading) {

@@ -8,6 +8,7 @@ import {
 import useCompany from "@/app/hooks/useCompany";
 import { useFile } from "@/app/hooks/useFile";
 import React, { ChangeEvent, useState } from "react";
+import { FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -65,6 +66,7 @@ export default function UpdateCompany({
       toast.error("Failed to update company");
     }
   }
+  const [isDeleting, setIsDeleting] = useState(false);
 
   return (
     <form onSubmit={handleUpdateCompany}>
@@ -111,31 +113,65 @@ export default function UpdateCompany({
               />
             </div>
 
-            <div>
+            <div >
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 رفع الملفات المرفقة
               </label>
-              <PrimaryInput
-                type="file"
-                multiple
+              <div className="flex items-center gap-2">
+                <PrimaryInput
+                  type="file"
+                  multiple
                 onChange={(e) => {
                   handleFileUpload(e);
                 }}
                 className="w-full"
               />
+            <div className="flex items-center gap-2">
+
+                <FaTrash
+                onClick={() => {
+                setIsDeleting(true);  
+                }}
+                />
+            </div>
             </div>
           </div>
 
           <div className="flex justify-end">
             <PrimaryButton
               type="submit"
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
-            >
+             >
               تحديث الشركة
             </PrimaryButton>
           </div>
         </div>
       </div>
+      </div>
+      {isDeleting && (
+        <div className="fixed inset-0 flex flex-col  items-center justify-center bg-black/30 backdrop-blur-sm" dir="rtl">
+          <div className="w-full max-w-2xl mx-4 bg-white rounded-2xl shadow-2xl gap-8 p-8 space-y-8">
+            <h1 className="text-3xl font-bold text-gray-800">هل تريد حذف جميع الصور؟</h1>
+            <div className="flex items-center gap-2 justify-start">
+          <PrimaryButton 
+          className="bg-blue-600 text-white " 
+          content="لا"
+          onClick={()=>
+            setIsDeleting(false)
+          }
+          />
+          <PrimaryButton 
+          className="bg-red-600 text-white " 
+          content="نعم"
+          onClick={()=>{
+            setUpCompany({...upCompany,words:[]})
+            setIsDeleting(false)
+          }}
+          />
+          </div>
+          </div>
+         
+          </div>
+      )}
     </form>
   );
 }

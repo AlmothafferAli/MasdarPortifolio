@@ -36,8 +36,11 @@ import FAQCards from "./ui/fetchFAQ";
 import { useGetAllFAQsQuery } from "@/app/features/Api/FAQApi";
 import AboutSection from "./ui/AboutSection";
 import LoadingSpinner from "./ui/LoadingSpinner";
+import { BaseUrl } from "@/app/features/Type/BaseUrl";
 
 export default function AdminPage() {
+  const company = useSelector((state: RootState) => state.company.UCompany);
+  
   const [activeItem, setActiveItem] = useState<string>("setup");
   const [isEditAbout, setIsEditAbout] = useState(false);
   const [text, setText] = useState("اعداد الرئيسية");
@@ -50,36 +53,40 @@ export default function AdminPage() {
   const [isAddCommunication, setIsAddCommunication] = useState(false);  
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
-
   const { data: employeesData, isLoading: isLoadingEmployees } = useGetEmployeesQuery(
     activeItem === "employees" ? {
       pageNumber: page,
       pageSize: 10,
+      companyId: company.id,
     } : skipToken
   );
   const { data: projectsData, isLoading: isLoadingProjects } = useGetAllProjectsQuery(
     activeItem === "projects" ? {
       pageNumber: page,
       pageSize: 10,
+      companyId: company.id,
     } : skipToken
   );
   const { data: servicesData, isLoading: isLoadingServices } = useGetAllServicesQuery(
     activeItem === "services" ? {
       pageNumber: page,
       pageSize: 10,
+      companyId: company.id,
     } : skipToken
   );
   const { data: partnersData, isLoading: isLoadingPartners } = useGetAllPartnersQuery(
     activeItem === "partners" ? {
       pageNumber: page,
       pageSize: 10,
+      companyId: company.id,
     } : skipToken
   );
   
   const { data: faqsData, isLoading: isLoadingFAQs } = useGetAllFAQsQuery(
     activeItem === "communication" ? {
       pageSize: 10,
-      pageNumber: page
+      pageNumber: page,
+      companyId: company.id,
     } : skipToken
   );
   
@@ -91,7 +98,6 @@ export default function AdminPage() {
     [partnersData]
   );
   const faqs = useMemo(() => faqsData?.data ?? [], [faqsData]);
-  const company = useSelector((state: RootState) => state.company.company);
   
   const handleButtonClick = () => {
     switch (activeItem) {
@@ -200,7 +206,7 @@ export default function AdminPage() {
                         >
                           <Image
                             className="w-6 h-6 rounded-full"
-                            src={"http://192.168.77.191:8081/" + project.logo}
+                            src={BaseUrl + project.logo}
                             alt="logo"
                             width={24}
                             height={24}
@@ -334,6 +340,7 @@ export default function AdminPage() {
                           features={service.features}
                           price={service.price}
                           summary={service.summary}
+                          isAdmin={true}
                         />
                       ))}
                     </div>
@@ -369,7 +376,7 @@ export default function AdminPage() {
               setIsEditAbout={setIsEditAbout}
               company={{
                 ...company,
-                id: "08dd88e3-7289-4462-88d6-16d91e81fa0d",
+                id: company.id,
               }}
             />
           </div>

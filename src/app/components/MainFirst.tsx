@@ -63,7 +63,7 @@ export default function MainFirst() {
             transition={{ duration: 0.8 }}
             className="md:w-1/2"
           >
-             <div className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] relative -mt-16 sm:-mt-20 md:-mt-24 lg:-mt-32">
+             <div className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] mt-4 relative ">
               {backgroundImage!=BaseUrl+"undefined" ? (
               <svg width="100%" height="100%" viewBox="0 0 500 500" className="absolute inset-0 w-full h-full">
                 <defs>
@@ -97,8 +97,8 @@ export default function MainFirst() {
                 </AnimatePresence>
               </svg>
               ) : (
-                <div className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] relative -mt-16 sm:-mt-20 md:-mt-24 lg:-mt-32">
-                  <ImageWithLoader src="/images/iconBlue.png" alt="Logo" className="object-cover" />
+                <div className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] relative ">
+                  <ImageWithLoader src="/images/iconBlue.png" alt="Logo" width={500} height={500} className="object-cover" />
                 </div>
               )}
             </div>
