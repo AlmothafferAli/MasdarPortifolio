@@ -19,7 +19,9 @@ export default function Partners() {
       skip: !company?.id,
     }
   );
-  const partners = (partnersData as PageResponse<IPartner>)?.data ?? [];
+
+  // Ensure partners is always an array
+  const partners = (partnersData as PageResponse<IPartner>)?.data || [];
 
   if (isLoading) {
     return (
@@ -29,7 +31,7 @@ export default function Partners() {
     );
   }
 
-  if (error) {
+  if (error || !partners.length) {
     return (
       <div className="text-center p-8 text-red-500">
         <p>عذراً، حدث خطأ أثناء تحميل الشركاء</p>
@@ -38,7 +40,10 @@ export default function Partners() {
   }
 
   return (
-    <section className="py-16 md:py-24 w-full" id="partners">
+    <section
+      className="py-12 md:py-16 w-full bg-white dark:bg-gray-900"
+      id="partners"
+    >
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -47,44 +52,70 @@ export default function Partners() {
         className="container mx-auto px-4"
         dir="rtl"
       >
-        <div className="max-w-3xl mx-auto text-center mb-16">
+        <div className="max-w-3xl mx-auto text-center mb-12">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6"
+            className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
           >
             عملاؤنا
           </motion.h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true }}
+            className="text-base text-gray-600 dark:text-gray-300"
+          >
             نفتخر بشراكتنا مع مجموعة من أبرز الشركات والمؤسسات
-          </p>
+          </motion.p>
         </div>
 
-        <div className="relative w-7/12 mx-auto max-w-[90rem]">
-          <Marquee
-            speed={100}
-            gradient={false}
-            pauseOnHover={true}
-            pauseOnClick={true}
-            delay={0}
-            play={true}
-            direction="right"
-          >
-            {partners.map((partner, index) => (
-              <div key={partner.id}>
-                <PartnerCard
-                  link={partner.website}
-                  website={partner.website}
-                  name={partner.name}
-                  logo={partner.logo}
-                  id={partner.id}
-                  children={<></>}
-                />
-              </div>
-            ))}
-          </Marquee>{" "}
+        <div className="relative  w-full max-w-6xl overflow-hidden mx-auto ">
+          <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10"></div>
+          <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10"></div>
+
+          {partners.length > 0 && (
+            <div className="w-full py-6 overflow-hidden partners-container">
+              <motion.div
+                className="flex w-max gap-4 md:gap-12 cursor-grab active:cursor-grabbing"
+                animate={{ x: ["-50%", "0%"] }}
+                transition={{
+                  repeat: 0,
+                  duration: partners.length * 2,
+                  ease: "easeOut",
+                }}
+                whileHover={{ animationPlayState: "paused" }}
+                onAnimationComplete={() => {
+                  const container = document.querySelector(
+                    ".partners-container"
+                  );
+                  if (container) {
+                    container.classList.add(
+                      "overflow-x-auto",
+                      "scrollbar-hide"
+                    );
+                    container.classList.remove("overflow-hidden");
+                  }
+                }}
+              >
+                {partners.map((partner, index) => (
+                  <div key={`${partner.id}-${index}`} className="mx-6 shrink-0">
+                    <PartnerCard
+                      website={partner.website}
+                      name={partner.name}
+                      logo={partner.logo}
+                      id={partner.id}
+                    >
+                      <></>
+                    </PartnerCard>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+          )}
         </div>
       </motion.div>
     </section>

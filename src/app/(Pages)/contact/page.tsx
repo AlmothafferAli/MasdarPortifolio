@@ -1,6 +1,6 @@
 "use client";
 import PrimaryButton from "@/app/components/EleComponents/PrimaryButton";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import ContactInfo from "@/app/components/ContactInfo";
 import { useGetAllFAQsQuery } from "@/app/features/Api/FAQApi";
@@ -97,6 +97,7 @@ export default function ContactPage() {
         setSuccess(false);
       }, 5000);
     } catch (error) {
+      console.log(error);
       toast.error("حدث خطأ أثناء إرسال الرسالة");
     }
   };

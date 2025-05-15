@@ -400,13 +400,7 @@ export default function AdminPage() {
         )}
         {isEditAbout && (
           <div className="bg-white rounded-2xl shadow-lg p-8 h-full">
-            <UpdateAbout
-              setIsEditAbout={setIsEditAbout}
-              company={{
-                ...company,
-                id: company.id,
-              }}
-            />
+            <UpdateAbout />
           </div>
         )}
         {isAddProject && (
