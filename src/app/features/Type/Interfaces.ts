@@ -250,7 +250,6 @@ export interface IFAQDto {
   answer: string;
 }
 export interface IUltraMsg {
-  phoneNumber: string;
 
   message: string;
 }

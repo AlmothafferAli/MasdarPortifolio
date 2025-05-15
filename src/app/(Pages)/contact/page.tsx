@@ -78,9 +78,11 @@ export default function ContactPage() {
     }
 
     data = {
-      phoneNumber: formData.phone,
       message:
-        formData.name + "\n" + formData.subject + "\n" + formData.message,
+        "الاسم: " + formData.name + "\n" +
+        "رقم الهاتف: " + formData.phone + "\n" +
+        "الموضوع: " + formData.subject + "\n" +
+        "الرسالة: " + formData.message,
     };
 
     try {

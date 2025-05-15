@@ -9,7 +9,7 @@ export const useUltraMsg = () => {
     useSendUltraMsgMutation();
 
   const handleSendUltraMsg = async (ultraMsg: IUltraMsg) => {
-    if (!ultraMsg.message || !ultraMsg.phoneNumber) {
+    if (!ultraMsg.message) {
       toast.error("يجب ادخال كل الحقول");
       return;
     }
